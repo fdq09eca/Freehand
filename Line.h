@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <Windows.h>
 
+
 class NonCopyable {
 
 private:
@@ -60,6 +61,7 @@ public:
 			Rectangle(hdc_, r.left, r.top, r.right, r.bottom);
 		}
 		else {
+			//FillRect(hdc_, &r, (HBRUSH)GetStockObject(BLACK_BRUSH));
 			SetPixel(hdc_, _pos.x, _pos.y, _color);
 		}
 	}

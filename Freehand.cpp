@@ -150,7 +150,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         mPos.y = GET_Y_LPARAM(lParam);
         Point pt(mPos.x, mPos.y);
         pt.draw(hdc);
-            ReleaseDC(hWnd, hdc);
+        ReleaseDC(hWnd, hdc);
 
         
     }
