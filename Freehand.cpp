@@ -4,14 +4,16 @@
 #include "framework.h"
 #include "Freehand.h"
 #include "Line.h"
-
 #define MAX_LOADSTRING 100
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-bool mouseLeftBtnDown = false;
+bool fDraw = false;
+POINT ptPrevious;
+
+
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -143,26 +145,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	} break;
 	case WM_LBUTTONDOWN:
-	{
-		mouseLeftBtnDown = true;
-	} break;
-	case WM_LBUTTONUP:
-	{
-		mouseLeftBtnDown = false;
-	} break;
+		fDraw = TRUE;
+		ptPrevious.x = LOWORD(lParam);
+		ptPrevious.y = HIWORD(lParam);
+		return 0L;
 
-	case WM_MOUSEMOVE: {
-		if (mouseLeftBtnDown) {
+	case WM_LBUTTONUP:
+		if (fDraw)
+		{
 			HDC hdc = GetDC(hWnd);
-			POINT mPos;
-			mPos.x = GET_X_LPARAM(lParam);
-			mPos.y = GET_Y_LPARAM(lParam);
-			Point pt(mPos.x, mPos.y);
-			pt.draw(hdc);
-			//InvalidateRect(hWnd, nullptr, false);
+			MoveToEx(hdc, ptPrevious.x, ptPrevious.y, NULL);
+			LineTo(hdc, LOWORD(lParam), HIWORD(lParam));
 			ReleaseDC(hWnd, hdc);
-		} // not fast enough
-	}break;
+		}
+		fDraw = FALSE;
+		return 0L;
+
+	case WM_MOUSEMOVE:
+		if (fDraw)
+		{
+			HDC hdc = GetDC(hWnd);
+			MoveToEx(hdc, ptPrevious.x, ptPrevious.y, NULL);
+			LineTo(hdc, ptPrevious.x = LOWORD(lParam),
+				ptPrevious.y = HIWORD(lParam));
+			ReleaseDC(hWnd, hdc);
+		}
 
 	case WM_KEYDOWN: {
 		switch (wParam)
