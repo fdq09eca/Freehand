@@ -58,10 +58,10 @@ public:
 	void draw(const HDC hdc_) const override {
 		if (_size) {
 			RECT r{ _pos.x - _size, _pos.y - _size, _pos.x + _size, _pos.y + _size };
-			Rectangle(hdc_, r.left, r.top, r.right, r.bottom);
+			FillRect(hdc_, &r, (HBRUSH)GetStockObject(BLACK_BRUSH));
 		}
 		else {
-			//FillRect(hdc_, &r, (HBRUSH)GetStockObject(BLACK_BRUSH));
+			//Rectangle(hdc_, r.left, r.top, r.right, r.bottom);
 			SetPixel(hdc_, _pos.x, _pos.y, _color);
 		}
 	}
