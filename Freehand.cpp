@@ -1,17 +1,18 @@
 // Freehand.cpp : Defines the entry point for the application.
 //
-#include "windowsx.h"
+
 #include "framework.h"
 #include "Freehand.h"
-#include "Line.h"
+#include "App.h"
+#include <cassert>
 #define MAX_LOADSTRING 100
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-bool fDraw = false;
-POINT ptPrevious;
+
+App app;
 
 
 // Forward declarations of functions included in this code module:
@@ -144,32 +145,43 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 	} break;
-	case WM_LBUTTONDOWN:
-		fDraw = TRUE;
-		ptPrevious.x = LOWORD(lParam);
-		ptPrevious.y = HIWORD(lParam);
-		return 0L;
-
-	case WM_LBUTTONUP:
-		if (fDraw)
-		{
-			HDC hdc = GetDC(hWnd);
-			MoveToEx(hdc, ptPrevious.x, ptPrevious.y, NULL);
-			LineTo(hdc, LOWORD(lParam), HIWORD(lParam));
-			ReleaseDC(hWnd, hdc);
+	case WM_LBUTTONDOWN: {
+		if (app.mouse.getState() == MouseState::None) {
+			app.initTempPoint();
+			app.mouse.setState(MouseState::LeftButtonDown);
 		}
-		fDraw = FALSE;
-		return 0L;
+		//set temp point
+	} break;
 
-	case WM_MOUSEMOVE:
-		if (fDraw)
-		{
-			HDC hdc = GetDC(hWnd);
-			MoveToEx(hdc, ptPrevious.x, ptPrevious.y, NULL);
-			LineTo(hdc, ptPrevious.x = LOWORD(lParam),
-				ptPrevious.y = HIWORD(lParam));
-			ReleaseDC(hWnd, hdc);
+	case WM_LBUTTONUP: {
+		if (app.mouse.getState() == MouseState::LeftButtonDown) {
+			app.mouse.setState(MouseState::None); 
+			AppObject* o = app.appObjPtrs.back();
+			if (o) {
+				o->setTemp(false); 
+			}
+			InvalidateRect(hWnd, nullptr, false);
 		}
+
+		//create element
+	} break;
+		
+		
+
+	case WM_MOUSEMOVE: {
+		app.mouse.setPos(lParam);
+		if (app.mouse.getState() == MouseState::LeftButtonDown) {
+			//dragging.
+			AppObject* p = app.lastItemPtr();
+			if (!p) {
+				assert(p);
+				return -1;
+			}
+
+			//p = app.appObjPtrs.back();
+
+		}
+	} break;
 
 	case WM_KEYDOWN: {
 		switch (wParam)
@@ -183,6 +195,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
+		app.draw(hdc);
 		// TODO: Add any drawing code that uses hdc here...
 		EndPaint(hWnd, &ps);
 	}
