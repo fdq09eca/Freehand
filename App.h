@@ -25,11 +25,10 @@ public:
 	}
 	
 	void initTempPoint() { 
-		Point* p = new Point(mouse, 6, currentColor); // why cannot?
+		Point* p = new Point(mouse, 6, currentColor);
 		appObjPtrs.push_back(p);
 		
 	}
-
 
 	AppObject* lastItemPtr() { return appObjPtrs.back(); }
 	
