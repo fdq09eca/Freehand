@@ -5,6 +5,7 @@
 #include "Freehand.h"
 #include "App.h"
 #include <cassert>
+#include <string>
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -146,41 +147,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	} break;
 	case WM_LBUTTONDOWN: {
-		if (app.mouse.getState() == MouseState::None) {
-			app.initTempPoint();
-			app.mouse.setState(MouseState::LeftButtonDown);
-		}
-		//set temp point
+		if (app.mouse.state() != MouseState::None) break;
+		app.mouse.setState(MouseState::LeftButtonDown);
+		app.initPoint();
+		InvalidateRect(hWnd, nullptr, true);
 	} break;
 
 	case WM_LBUTTONUP: {
-		if (app.mouse.getState() == MouseState::LeftButtonDown) {
-			app.mouse.setState(MouseState::None); 
-			AppObject* o = app.appObjPtrs.back();
-			if (o) {
-				o->setTemp(false); 
-			}
-			InvalidateRect(hWnd, nullptr, false);
-		}
+		if (app.mouse.state() != MouseState::LeftButtonDown) break;
+		app.mouse.setState(MouseState::None);
+		InvalidateRect(hWnd, nullptr, true);
 
 		//create element
 	} break;
-		
-		
+
+
 
 	case WM_MOUSEMOVE: {
 		app.mouse.setPos(lParam);
-		if (app.mouse.getState() == MouseState::LeftButtonDown) {
+		
+		for (AppObject* p : app.appObjPtrs) {
+			assert(p);
+			if (p->isHovered()) {
+				HDC hdc = GetDC(hWnd);
+				p->drawHitBox(hdc);
+				ReleaseDC(hWnd, hdc);
+			}
+		}
+
+		if (app.mouse.state() == MouseState::LeftButtonDown) {
 			//dragging.
 			AppObject* p = app.lastItemPtr();
 			if (!p) {
 				assert(p);
 				return -1;
 			}
-
-			//p = app.appObjPtrs.back();
+			p->setPos(app.mouse.getPos());
 
 		}
+
+		InvalidateRect(hWnd, nullptr, true); // for real?
 	} break;
 
 	case WM_KEYDOWN: {
@@ -195,6 +201,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
+	
+		
 		app.draw(hdc);
 		// TODO: Add any drawing code that uses hdc here...
 		EndPaint(hWnd, &ps);

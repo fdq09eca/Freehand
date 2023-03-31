@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <Windows.h>
 #include "windowsx.h"
+#include <string>
+#include <cassert>
 
 class NonCopyable {
 
@@ -12,6 +14,13 @@ private:
 public:
 	NonCopyable() = default;
 	~NonCopyable() = default;
+};
+
+enum class MouseButton {
+	NA = 0,
+	Left,
+	Middle,
+	Right,
 };
 
 enum class MouseState {
@@ -32,7 +41,18 @@ public:
 	}
 
 	const POINT& getPos() const { return _pos; }
-	const MouseState& getState() const { return _state; }
+	//POINT getPos() { return _pos; }
+	const MouseState& state() const { return _state; }
+	
+	const char* stateAsString() const { 
+		switch (_state)
+		{
+			case MouseState::None: return "MouseState::None";
+			case MouseState::LeftButtonDown: return "MouseState::LeftButtonDown";
+			case MouseState::RightButtonDown: return "MouseState::RightButtonDown";
+		}
+		assert(false);
+	}
 
 	void setState(MouseState state_) {
 		_state = state_;
@@ -47,12 +67,12 @@ protected:
 	POINT _pos{ 0, 0 };
 	RECT _hitBox{ 0, 0, 0, 0 };
 	bool _isSelected = false;
-	bool _isTemp = true;
+	
 
 	const Mouse& _mouse; //owned by App
 	void reset() {
 		_pos = POINT{ 0, 0 };
-		_hitBox = RECT{ 0, 0, 0, 0 };
+	
 		_isSelected = false;
 	}
 
@@ -63,22 +83,26 @@ public:
 		reset();
 	}
 
-	POINT pos()		const { _pos; };
-	void setPos(int x_, int y_) { _pos.x = x_; _pos.y = y_; };
+	POINT pos()		const { _pos; }
+	void setPos(int x_, int y_) { _pos.x = x_; _pos.y = y_; }
+	void setPos(const POINT& pos) { _pos = pos; }
 
-	virtual void setHitBox(RECT rect) { _hitBox = rect; }
-	RECT  hitbox()	const { return _hitBox; }
+	
+	bool isHovered() const { 
 
-	bool isHovered() const { return PtInRect(&_hitBox, _mouse.getPos()); }
+		RECT hBox = hitBox();
+		return PtInRect(&hBox, _mouse.getPos());
+	}
 
-	void setTemp(bool isTemp_) { _isTemp = isTemp_; }
-	bool getTemp() const { return _isTemp; }
-
+	virtual RECT  hitBox()	const = 0;
 	virtual void draw(HDC hdc_) const = 0;
 	virtual void drawHitBox(HDC hdc_) const {
 		if ((isHovered()) || _isSelected) {
-			Rectangle(hdc_, _hitBox.left, _hitBox.top, _hitBox.right, _hitBox.bottom);
+			RECT hBox = hitBox();
+			Rectangle(hdc_, hBox.left, hBox.top, hBox.right, hBox.bottom);
 		}
-
 	}
+	
+
+	
 };
