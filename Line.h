@@ -14,25 +14,34 @@ public:
 	}
 
 	POINT pos() const override { return Point::midPoint(_pt0, _pt1); }
-	void setPos(){}
+	void setPos(){_pos = Point::midPoint(_pt0, _pt1);} // move whole line
 	
 	void onDrag() override {
 		_pt1.setPos(_mouse);
-		
 	}
 
-	RECT hitBox() const {
-		RECT r;
+	RECT hitBox() const override {
+		
+		int left	= _pt0.x() < _pt1.x() ? _pt0.x() : _pt1.x();
+		int right	= _pt0.x() < _pt1.x() ? _pt1.x() : _pt0.x();
+		int top		= _pt0.y() < _pt1.y() ? _pt0.y() : _pt1.y();
+		int bottom	= _pt0.y() < _pt1.y() ? _pt1.y() : _pt0.y();
+		
+		RECT r{ left, top, right, bottom };
 		return r;
 	}
 
-	void draw(HDC hdc) const override{
-
+	void draw(HDC hdc_) const override{
+		drawHitBox(hdc_);
+		MoveToEx(hdc_, _pt0.x(), _pt0.y(), nullptr);
+		LineTo(hdc_, _pt1.x(), _pt1.y());
+		drawDebugMessage(hdc_);
 	}
 
-	static void drawLine(HDC hdc, const Point& pt0_, const Point& pt1_) {
-		MoveToEx(hdc, pt0_.x(), pt0_.y(), nullptr);
-		LineTo(hdc, pt1_.x(), pt1_.y());
-	}
+	
+
+
+	
+	
 };
 

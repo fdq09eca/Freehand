@@ -51,12 +51,10 @@ public:
 	void init(AppObjectType type) {
 		switch (type)
 		{
-		case AppObjectType::NA: {assert(false); } break;
-		case AppObjectType::Point: {initPoint(); }break;
-		case AppObjectType::Line:
-			break;
-		default:
-			break;
+			case AppObjectType::NA:		{ assert(false);	} break;
+			case AppObjectType::Point:	{ initPoint();		} break;
+			case AppObjectType::Line:	{ initLine();		} break;
+			default: break;
 		}
 	}
 
@@ -70,9 +68,13 @@ public:
 		char debugMsg[200]{ 0 };
 		sprintf_s(debugMsg, 200,
 			"appObjPtrs.size: %d\n"
-			"MouseState: %s\n\0",
+			"MouseState: %s\n"
+			"mousePos: x:%d, y:%d\n\0",
 			appObjPtrs.size(),
-			mouse.stateAsString());	
+			mouse.stateAsString(),
+			mouse.getPos().x,
+			mouse.getPos().y
+		);	
 		DrawTextA(hdc_, debugMsg, strlen(debugMsg), &debugRect, DT_TOP | DT_LEFT);
 	}
 

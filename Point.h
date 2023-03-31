@@ -4,6 +4,7 @@
 class Point : public AppObject {
 	int _hitBoxsize = 6;
 	COLORREF _color = RGB(0, 0, 0);
+
 public:
 	Point() = delete;
 	Point(const Mouse& mouse_) : AppObject(mouse_) { };
@@ -11,6 +12,7 @@ public:
 	void draw(HDC hdc_) const override {	
 		drawHitBox(hdc_);
 		SetPixel(hdc_, _pos.x, _pos.y, _color);
+		drawDebugMessage(hdc_);
 	}
 
 	RECT hitBox() const override {
@@ -27,6 +29,9 @@ public:
 	void onDrag() override {
 		setPos(_mouse);
 	}
+
+	
+	
 
 
 };

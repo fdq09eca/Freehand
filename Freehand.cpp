@@ -14,6 +14,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 App app;
+AppObjectType cuurentAppObjType = AppObjectType::Line;
 
 
 // Forward declarations of functions included in this code module:
@@ -146,10 +147,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 	} break;
+
+	case WM_KEYDOWN: {
+		switch (wParam)
+		{
+		case VK_F1: {
+			cuurentAppObjType = AppObjectType::Line;
+		} break;
+		case VK_F2: {
+			cuurentAppObjType = AppObjectType::Point;
+		} break;
+		default:
+			break;
+		}
+	}
+
 	case WM_LBUTTONDOWN: {
 		if (app.mouse.state() != MouseState::None) break;
 		app.mouse.setState(MouseState::LeftButtonDown);
-		app.initPoint();
+		app.init(cuurentAppObjType);
 		InvalidateRect(hWnd, nullptr, false);
 	} break;
 
@@ -187,19 +203,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		}
 
-		RECT mRect=  app.mouse.hitBox();
 		
-		InvalidateRect(hWnd, &mRect, true); // for real?
+		
+		//InvalidateRect(hWnd, &mRect, true); // for real?
+		InvalidateRect(hWnd, nullptr, true); // for real?
 	} break;
 
-	case WM_KEYDOWN: {
-		switch (wParam)
-		{
-		default:
-			break;
-		}
-		//InvalidateRect(hWnd, nullptr, true);
-	}
+	
 	case WM_PAINT:
 	{
 		PAINTSTRUCT ps;
