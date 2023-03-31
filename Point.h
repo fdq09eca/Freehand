@@ -2,36 +2,28 @@
 #include "AppObject.h"
 
 class Point : public AppObject {
-	int _hitBoxsize = 6;
-	COLORREF _color = RGB(0, 0, 0);
+	
 
 public:
-	Point() = delete;
-	Point(const Mouse& mouse_) : AppObject(mouse_) { };
-
-	void draw(HDC hdc_) const override {	
-		drawHitBox(hdc_);
-		SetPixel(hdc_, _pos.x, _pos.y, _color);
-		drawDebugMessage(hdc_);
-	}
-
-	RECT hitBox() const override {
-		return RECT{ _pos.x - _hitBoxsize, _pos.y - _hitBoxsize, _pos.x + _hitBoxsize, _pos.y + _hitBoxsize};
-	}
-
-	int x() const { return _pos.x;}
-	int y() const { return _pos.y;}
-
-	static POINT midPoint(const Point& pt0, const Point& pt1)  {
-		return POINT{ (pt0.x() + pt1.x()) / 2, (pt0.y() + pt1.y()) / 2};
-	}
+	int hitBoxsize = 6;
+	POINT pos{0, 0};
 	
-	void onDrag() override {
-		setPos(_mouse);
+	Point() { _type = Type::Point; };
+
+	RECT hitBox() const  {
+		return RECT{ pos.x - hitBoxsize, pos.y - hitBoxsize, pos.x + hitBoxsize, pos.y + hitBoxsize};
 	}
 
-	
-	
+	void draw(HDC hdc_) const override {
+		RECT r = hitBox();
+		COLORREF color = RGB(0, 0, 0);
+		if (_isHovered) { 
+			color = RGB(255, 0, 0);
+		}
+
+		SetPixel(hdc_, pos.x, pos.y, color);
+
+	}
 
 
 };

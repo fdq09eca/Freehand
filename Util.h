@@ -17,51 +17,40 @@ public:
 };
 
 enum class MouseButton {
-	NA = 0,
-	Left,
-	Middle,
-	Right,
-};
-
-enum class MouseState {
-	None = 0,
-	LeftButtonDown,
-	RightButtonDown,
-};
-
-class Mouse {
-	POINT _pos;
-	MouseState _state = MouseState::None;
-
-public:
-
-	void setPos(LPARAM lp) {
-		_pos.x = GET_X_LPARAM(lp);
-		_pos.y = GET_Y_LPARAM(lp);
-	}
-
-	const POINT& getPos() const { return _pos; }
-	//POINT getPos() { return _pos; }
-	const MouseState& state() const { return _state; }
+	NA = 0, 
+	Left = 1 << 0,    // 1, 0001
+	Middle = 1 << 1, // 2,  0010 
+	Right = 1 << 2, // 4,   0100
 	
-	const char* stateAsString() const { 
-		switch (_state)
-		{
-			case MouseState::None: return "MouseState::None";
-			case MouseState::LeftButtonDown: return "MouseState::LeftButtonDown";
-			case MouseState::RightButtonDown: return "MouseState::RightButtonDown";
-		}
-		assert(false);
-	}
+};
 
-	void setState(MouseState state_) {
-		_state = state_;
-	}
 
-	RECT hitBox() const {
-		RECT r{ _pos.x - 100, _pos.y - 100, _pos.x + 100, _pos.y + 100 };
-		return r;
-	}
+
+enum class MouseEventType {
+	None = 0,
+	Up,
+	Down,
+	Move,
+};
+
+class MouseEvent {
+public:
+	using Type = MouseEventType;
+	using Button = MouseButton;
+	POINT pos;
+	Type eventType = Type::None;
+	Button button = Button::NA;
+	Button buttonState = Button::NA; // 0101
+	
+	bool isUp()	  const { return eventType == Type::Up; }
+	bool isDown() const { return eventType == Type::Down; }
+	bool isMove() const { return eventType == Type::Move; }
+	
+	bool isLButton() const { return button == Button::Left; }
+	bool isMButton() const { return button == Button::Middle; }
+	bool isRButton() const { return button == Button::Right; }
+
+	
 };
 
 

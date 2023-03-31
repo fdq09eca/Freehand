@@ -3,39 +3,43 @@
 
 class Line : public AppObject
 {
-	Point _pt0;
-	Point _pt1;
-	
-	Line() = delete;
+
 public:
-	Line(const Mouse& mouse_) : AppObject(mouse_), _pt0(mouse_), _pt1(mouse_)
-	{
-		
-	}
-
-	POINT pos() const override { return Point::midPoint(_pt0, _pt1); }
-	void setPos(){_pos = Point::midPoint(_pt0, _pt1);} // move whole line
+	Point pt[2];
+	int dragPoint = -1;
 	
-	void onDrag() override {
-		_pt1.setPos(_mouse);
+	Line() { _type = Type::Line; }
+
+	virtual bool onMouseEvent(const MouseEvent& ev) override {
+		
+		if (ev.isUp() && ev.isLButton()) {
+			dragPoint = -1;
+			pt[1].pos = ev.pos;
+			return true;
+		} 
+		
+		else if (ev.isMove()) {
+			if (dragPoint >= 0 && dragPoint < 2 ) {
+				pt[dragPoint].pos = ev.pos;
+				return true;
+			}	
+		}
+		
+		return false;
 	}
 
-	RECT hitBox() const override {
-		
-		int left	= _pt0.x() < _pt1.x() ? _pt0.x() : _pt1.x();
-		int right	= _pt0.x() < _pt1.x() ? _pt1.x() : _pt0.x();
-		int top		= _pt0.y() < _pt1.y() ? _pt0.y() : _pt1.y();
-		int bottom	= _pt0.y() < _pt1.y() ? _pt1.y() : _pt0.y();
-		
-		RECT r{ left, top, right, bottom };
-		return r;
+	void createByMouse(const MouseEvent& ev) {
+		pt[0].pos = ev.pos;
+		pt[1].pos = ev.pos;
+		dragPoint = 1;
 	}
 
-	void draw(HDC hdc_) const override{
-		drawHitBox(hdc_);
-		MoveToEx(hdc_, _pt0.x(), _pt0.y(), nullptr);
-		LineTo(hdc_, _pt1.x(), _pt1.y());
-		drawDebugMessage(hdc_);
+	void draw(HDC hdc_) const override {
+		MoveToEx(hdc_, pt[0].pos.x, pt[0].pos.y, nullptr);
+		LineTo  (hdc_, pt[1].pos.x, pt[1].pos.y);
+		
+		pt[0].draw(hdc_);
+		pt[1].draw(hdc_);
 	}
 
 	

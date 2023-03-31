@@ -45,7 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_FREEHAND));
-
+	app.init();
 	MSG msg;
 
 	// Main message loop:
@@ -162,52 +162,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	}
 
-	case WM_LBUTTONDOWN: {
-		if (app.mouse.state() != MouseState::None) break;
-		app.mouse.setState(MouseState::LeftButtonDown);
-		app.init(cuurentAppObjType);
-		InvalidateRect(hWnd, nullptr, false);
-	} break;
-
-	case WM_LBUTTONUP: {
-		if (app.mouse.state() != MouseState::LeftButtonDown) break;
-		app.mouse.setState(MouseState::None);
-		InvalidateRect(hWnd, nullptr, false);
-
-		//create element
-	} break;
-
-
-
-	case WM_MOUSEMOVE: {
-		/*app.onMouseMove(lParam);*/ // flash 
-		app.mouse.setPos(lParam);
-
-		for (AppObject* p : app.appObjPtrs) {
-			assert(p);
-			if (p->isHovered()) {
-				HDC hdc = GetDC(hWnd);
-				p->drawHitBox(hdc);
-				ReleaseDC(hWnd, hdc);
-			}
-		}
-
-		if (app.mouse.state() == MouseState::LeftButtonDown) {
-			//dragging.
-			AppObject* p = app.lastItemPtr();
-			if (!p) {
-				assert(p);
-				return -1;
-			}
-			p->onDrag();
-
-		}
-
-		
-		
-		//InvalidateRect(hWnd, &mRect, true); // for real?
-		InvalidateRect(hWnd, nullptr, true); // for real?
-	} break;
+	case WM_LBUTTONDOWN: 
+	case WM_MBUTTONDOWN: 
+	case WM_RBUTTONDOWN: 
+	case WM_LBUTTONUP: 
+	case WM_MBUTTONUP: 
+	case WM_RBUTTONUP: 
+	case WM_MOUSEMOVE: { app._onWin32MouseEvent(message, wParam, lParam); } break;
 
 	
 	case WM_PAINT:
@@ -248,4 +209,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	return (INT_PTR)FALSE;
+}
+
+int main() {
+	wWinMain(GetInstanceModule(nullptr), nullptr, 0, SW_SHOW);
+	return 0;
 }
