@@ -1,8 +1,6 @@
 #pragma once
 #include "Util.h"
 
-
-
 enum class AppObjectType {
 	NA = 0,
 	AppObject,
@@ -26,18 +24,12 @@ protected:
 		_isHovered = false;
 	}
 
-
-
 public:
 	AppObject() { reset(); }
 	virtual ~AppObject() { }
 	virtual void draw(HDC hdc_) const { };
 	virtual bool onMouseEvent(const MouseEvent& e) { return false; }
 	Type type() const { return _type; }
-
-
-
-
 
 };
 

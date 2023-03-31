@@ -9,6 +9,8 @@
 #define MAX_LOADSTRING 100
 
 // Global Variables:
+
+
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
@@ -151,14 +153,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN: {
 		switch (wParam)
 		{
-		case VK_F1: {
-			cuurentAppObjType = AppObjectType::Line;
-		} break;
-		case VK_F2: {
-			cuurentAppObjType = AppObjectType::Point;
-		} break;
-		default:
-			break;
+			case VK_F1: { cuurentAppObjType = AppObjectType::Line; } break;
+			case VK_F2: { cuurentAppObjType = AppObjectType::Point; } break;
+			default: { } break;
 		}
 	}
 

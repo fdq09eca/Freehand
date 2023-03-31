@@ -12,7 +12,6 @@ class App : NonCopyable
 	HWND _hWnd = NULL;
 
 public:
-	MouseEvent mouse;
 	std::vector<std::unique_ptr<AppObject>> objList;
 	std::unique_ptr<AppObject> tmpObj;
 	

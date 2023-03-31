@@ -15,7 +15,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 	}
 	else {
 
-		for (auto& p : objList) {
+		for (auto& p : objList) { 
 			if (p->onMouseEvent(ev)) {
 				return;
 			}
@@ -24,17 +24,20 @@ void App::onMouseEvent(const MouseEvent& ev) {
 		if (ev.isDown()) {
 			if (ev.isLButton()) {
 				auto p = std::make_unique<Line>();
-				p->createByMouse(ev);
+				p->onMouseLeftBtnDown(ev);
 				tmpObj = std::move(p);
 			}
+
 		}
 
 
+
+
+
+		
+
+
 	}
-
-
-
-	//InvalidateRect(_hWnd, nullptr, true); // for real?
 
 }
 
