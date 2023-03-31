@@ -164,8 +164,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 	case WM_MOUSEMOVE: {
+		/*app.onMouseMove(lParam);*/ // flash 
 		app.mouse.setPos(lParam);
-		
+
 		for (AppObject* p : app.appObjPtrs) {
 			assert(p);
 			if (p->isHovered()) {
@@ -186,6 +187,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		}
 
+		
 		InvalidateRect(hWnd, nullptr, true); // for real?
 	} break;
 

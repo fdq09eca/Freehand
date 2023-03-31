@@ -57,6 +57,11 @@ public:
 	void setState(MouseState state_) {
 		_state = state_;
 	}
+
+	RECT hitBox() {
+		RECT r{ _pos.x - 100, _pos.y, _pos.x + 100, _pos.y + 100 };
+		return r;
+	}
 };
 
 

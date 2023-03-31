@@ -62,7 +62,26 @@ public:
 	}
 
 	void onMouseMove(LPARAM lp) {
+		mouse.setPos(lp);
 
+		for (AppObject* p : appObjPtrs) {
+			assert(p);
+			if (p->isHovered()) {
+				HDC hdc = GetDC(_hWnd);
+				p->drawHitBox(hdc);
+				ReleaseDC(_hWnd, hdc);
+			}
+		}
+
+		if (mouse.state() == MouseState::LeftButtonDown) {
+			//dragging.
+			AppObject* p = lastItemPtr();
+			assert(p);
+			p->setPos(mouse.getPos());
+
+		}
+
+		InvalidateRect(_hWnd, nullptr, true); // for real?
 		
 	}
 	
