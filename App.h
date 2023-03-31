@@ -1,8 +1,16 @@
 #pragma once
-#include "Util.h"
+#include "AppObject.h"
 #include <vector>
 #include "Point.h"
+#include "Line.h"
 #include "string"
+
+
+enum class AppObjectType {
+	NA = 0,
+	Point,
+	Line,
+};
 
 class App : NonCopyable
 {
@@ -24,14 +32,35 @@ public:
 		drawDebugMsgBox(hdc_);
 		for (auto p : appObjPtrs) { 
 			p->draw(hdc_); 
-		} 
+		}
+
+		/*RECT mRect = mouse.hitBox();
+		Rectangle(hdc_, mRect.left, mRect.top, mRect.right, mRect.bottom);*/
 	}
 	
-	void initPoint() { 
-		Point* p = new Point(mouse, 6, currentColor);
+	void initPoint() {
+		Point* p = new Point(mouse);
 		appObjPtrs.push_back(p);
-		
 	}
+
+	void initLine() {
+		Line* p = new Line(mouse);
+		appObjPtrs.push_back(p);
+	}
+
+	void init(AppObjectType type) {
+		switch (type)
+		{
+		case AppObjectType::NA: {assert(false); } break;
+		case AppObjectType::Point: {initPoint(); }break;
+		case AppObjectType::Line:
+			break;
+		default:
+			break;
+		}
+	}
+
+	
 
 	AppObject* lastItemPtr() { return appObjPtrs.back(); }
 	

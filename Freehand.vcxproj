@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="AppObject.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Freehand.h" />
     <ClInclude Include="Line.h" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AppObject.cpp" />
     <ClCompile Include="Freehand.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Point.cpp" />

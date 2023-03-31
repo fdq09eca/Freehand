@@ -1,15 +1,12 @@
 #pragma once
-#include "Util.h"
+#include "AppObject.h"
 
-class Point : public AppObject{
-	int _size = 0;
+class Point : public AppObject {
+	int _hitBoxsize = 6;
 	COLORREF _color = RGB(0, 0, 0);
 public:
-
-	Point(const Mouse& mouse_, int size_, COLORREF color_) : AppObject(mouse_), _size(size_), _color(color_)
-	{
-		
-	}
+	Point() = delete;
+	Point(const Mouse& mouse_) : AppObject(mouse_) { };
 
 	void draw(HDC hdc_) const override {	
 		drawHitBox(hdc_);
@@ -17,13 +14,19 @@ public:
 	}
 
 	RECT hitBox() const override {
-		return RECT{ _pos.x - _size, _pos.y - _size, _pos.x + _size, _pos.y + _size};
+		return RECT{ _pos.x - _hitBoxsize, _pos.y - _hitBoxsize, _pos.x + _hitBoxsize, _pos.y + _hitBoxsize};
 	}
 
+	int x() const { return _pos.x;}
+	int y() const { return _pos.y;}
 
-	void setSize(int size_) { _size = size_; }
-
+	static POINT midPoint(const Point& pt0, const Point& pt1)  {
+		return POINT{ (pt0.x() + pt1.x()) / 2, (pt0.y() + pt1.y()) / 2};
+	}
 	
+	void onDrag() override {
+		setPos(_mouse);
+	}
 
 
 };

@@ -150,13 +150,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (app.mouse.state() != MouseState::None) break;
 		app.mouse.setState(MouseState::LeftButtonDown);
 		app.initPoint();
-		InvalidateRect(hWnd, nullptr, true);
+		InvalidateRect(hWnd, nullptr, false);
 	} break;
 
 	case WM_LBUTTONUP: {
 		if (app.mouse.state() != MouseState::LeftButtonDown) break;
 		app.mouse.setState(MouseState::None);
-		InvalidateRect(hWnd, nullptr, true);
+		InvalidateRect(hWnd, nullptr, false);
 
 		//create element
 	} break;
@@ -183,12 +183,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				assert(p);
 				return -1;
 			}
-			p->setPos(app.mouse.getPos());
+			p->onDrag();
 
 		}
 
+		RECT mRect=  app.mouse.hitBox();
 		
-		InvalidateRect(hWnd, nullptr, true); // for real?
+		InvalidateRect(hWnd, &mRect, true); // for real?
 	} break;
 
 	case WM_KEYDOWN: {

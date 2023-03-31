@@ -1,14 +1,38 @@
 #pragma once
 #include "Point.h"
 
-//class Line : AppObject
-//{
-//	Point _pt0;
-//	Point _pt1;
-//
-//	Line(int x0_, int y0_, int x1_, int y1_, const Mouse& mouse_) : AppObject((x0_ + x1_) / 2, (y0_ + y1_) / 2, mouse_), _pt0(mouse_, x0_, y0_), _pt1(mouse_, x1_, y1_)
-//	{
-//		
-//	}
-//};
-//
+class Line : public AppObject
+{
+	Point _pt0;
+	Point _pt1;
+	
+	Line() = delete;
+public:
+	Line(const Mouse& mouse_) : AppObject(mouse_), _pt0(mouse_), _pt1(mouse_)
+	{
+		
+	}
+
+	POINT pos() const override { return Point::midPoint(_pt0, _pt1); }
+	void setPos(){}
+	
+	void onDrag() override {
+		_pt1.setPos(_mouse);
+		
+	}
+
+	RECT hitBox() const {
+		RECT r;
+		return r;
+	}
+
+	void draw(HDC hdc) const override{
+
+	}
+
+	static void drawLine(HDC hdc, const Point& pt0_, const Point& pt1_) {
+		MoveToEx(hdc, pt0_.x(), pt0_.y(), nullptr);
+		LineTo(hdc, pt1_.x(), pt1_.y());
+	}
+};
+
