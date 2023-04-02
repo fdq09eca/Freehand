@@ -14,7 +14,6 @@ public:
 	virtual bool onMouseEvent(const MouseEvent& ev) override {
 		
 		
-		
 		if (ev.isUp() && ev.isLButton()) {
 			dragPoint = -1;
 			pt[1] = ev.pos;
@@ -23,7 +22,6 @@ public:
 		
 		else if (ev.isMove()) {
 
-
 			if (dragPoint >= 0 && dragPoint < 2 ) {
 				pt[dragPoint] = ev.pos;
 				return true;
@@ -31,10 +29,11 @@ public:
 
 
 			for (int i = 0; i < 2; i++) {
+				hoverPoint = -1;
 				if (pt[i].inRange(ev.pos, 3)) {
 					// isHover
 					hoverPoint = i;
-					break;
+					return true;
 				}
 			}
 		}
