@@ -15,10 +15,20 @@ public:
 		
 		
 		if (ev.isUp() && ev.isLButton()) {
-			dragPoint = -1;
-			pt[1] = ev.pos;
-			return true;
-		} 
+			if (dragPoint >= 0 && dragPoint < 2) {
+				pt[dragPoint] = ev.pos;
+				dragPoint = -1;
+				hoverPoint = -1;
+				return true;
+			}
+		}
+		
+		else if (ev.isDown() && ev.isLButton()) {
+			if (hoverPoint >= 0 && hoverPoint < 2) {
+				dragPoint = hoverPoint;
+				return true;
+			}
+		}
 		
 		else if (ev.isMove()) {
 
@@ -26,10 +36,9 @@ public:
 				pt[dragPoint] = ev.pos;
 				return true;
 			}	
-
-
+			
+			hoverPoint = -1;
 			for (int i = 0; i < 2; i++) {
-				hoverPoint = -1;
 				if (pt[i].inRange(ev.pos, 3)) {
 					// isHover
 					hoverPoint = i;

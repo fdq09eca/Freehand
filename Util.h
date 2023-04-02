@@ -19,8 +19,8 @@ public:
 enum class MouseButton {
 	NA = 0, 
 	Left = 1 << 0,    // 1, 0001
-	Middle = 1 << 1, // 2,  0010 
-	Right = 1 << 2, // 4,   0100
+	Middle = 1 << 1,  // 2, 0010 
+	Right = 1 << 2,   // 4, 0100
 	
 };
 
@@ -40,7 +40,7 @@ public:
 	POINT pos;
 	Type eventType = Type::None;
 	Button button = Button::NA;
-	Button buttonState = Button::NA; // 0101
+	Button buttonState = Button::NA;
 	
 	bool isUp()	  const { return eventType == Type::Up; }
 	bool isDown() const { return eventType == Type::Down; }
