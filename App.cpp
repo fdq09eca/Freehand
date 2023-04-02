@@ -1,9 +1,37 @@
 #include "App.h"
 
+void App::setHwnd(HWND hWnd_) {
+	_hWnd = hWnd_;
+}
+
+void App::draw(HDC hdc_)  {
+#if !true
+	for (const auto& p : objList) {
+		p->draw(hdc_);
+	}
+
+	if (tmpObj) { tmpObj->draw(hdc_); }
+#else
+	backBuffer.create(_hWnd);
+	for (const auto& p : objList) {
+		p->draw(backBuffer.dc());
+	}
+	
+
+	if (tmpObj) {
+		tmpObj->draw(backBuffer.dc());
+	}
+	
+	backBuffer.draw(hdc_);
+	backBuffer.destroy();
+#endif
+
+
+}
+
 void App::onMouseEvent(const MouseEvent& ev) {
 	
 	if (tmpObj) {
-
 		if (ev.isMove()) {
 			tmpObj->onMouseEvent(ev);
 			return;
@@ -15,6 +43,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 				tmpObj->onMouseEvent(ev); //onEndCreateTmpObj
 				objList.emplace_back(std::move(tmpObj));
 				tmpObj = nullptr;
+				return;
 			}
 		}
 	}
@@ -31,6 +60,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 				auto p = std::make_unique<Line>(); //create current selected Object
 				p->onMouseLeftBtnDown(ev); //onBeginCreateTmpObj
 				tmpObj = std::move(p);
+				return;
 			}
 		}
 	}
@@ -63,6 +93,6 @@ void App::_onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp) {
 
 
 	onMouseEvent(ev);
-	InvalidateRect(_hWnd, nullptr, true);
+	InvalidateRect(_hWnd, nullptr, false);
 
 }

@@ -124,6 +124,7 @@ public:
 		
 		_dc = CreateCompatibleDC(wndDC);
 		_bmp = CreateCompatibleBitmap(_dc, _w, _h);
+		
 		SelectObject(_dc, _bmp);
 		auto brush = (HBRUSH)GetStockObject(WHITE_BRUSH);
 		FillRect(_dc, &rc, brush);
@@ -159,7 +160,8 @@ public:
 		_bitmap.create(rc.right - rc.left, rc.bottom - rc.top);
 		SelectObject(_dc, _bitmap.hBitMap());
 		
-		
+		auto brush = (HBRUSH)GetStockObject(WHITE_BRUSH);
+		FillRect(_dc, &rc, brush);
 	}
 
 	HDC dc() const { return _dc; }

@@ -29,26 +29,9 @@ public:
 		objList.emplace_back(std::move(p));
 	}
 
-	void setHwnd(HWND hWnd_) {
-		_hWnd = hWnd_; 
-		backBuffer.create(hWnd_);
-	}
+	void setHwnd(HWND hWnd_);
 
-	void draw(HDC hdc_) const { 
-	
-		for (const auto& p : objList) { 
-			p->draw(hdc_);
-		}
-		
-		if (tmpObj) {
-			tmpObj->draw(hdc_);
-		}
-
-		//backBuffer.draw(hdc_);
-
-	}
-
-	
+	void draw(HDC hdc_) ;
 
 	void onMouseEvent(const MouseEvent& ev);
 
