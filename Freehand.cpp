@@ -18,7 +18,6 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 App app;
 AppObjectType cuurentAppObjType = AppObjectType::Line;
 
-
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -112,9 +111,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
 		return FALSE;
 	}
-
+	app.setHwnd(hWnd);
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
+
+	
 
 	return TRUE;
 }

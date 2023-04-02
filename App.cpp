@@ -3,6 +3,11 @@
 void App::onMouseEvent(const MouseEvent& ev) {
 	
 	if (tmpObj) {
+
+		if (ev.isMove()) {
+			tmpObj->onMouseEvent(ev);
+			return;
+		}
 		
 
 		if (ev.isUp()) {
@@ -28,14 +33,6 @@ void App::onMouseEvent(const MouseEvent& ev) {
 				tmpObj = std::move(p);
 			}
 		}
-
-
-
-
-
-		
-
-
 	}
 
 }

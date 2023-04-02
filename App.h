@@ -10,6 +10,7 @@
 class App : NonCopyable
 {
 	HWND _hWnd = NULL;
+	BackBuffer backBuffer;
 
 public:
 	std::vector<std::unique_ptr<AppObject>> objList;
@@ -18,17 +19,20 @@ public:
 
 	
 	App() = default;
-	~App() { }
+	~App() {  }
 
 	void init() {
-		/*auto p = std::make_unique<Line>();
-		p->pt0.pos = POINT{ 100, 100 };
-		p->pt1.pos = POINT{ 200, 200 };
+		auto p = std::make_unique<Line>();
+		p->pt[0]= POINT{ 100, 100 };
+		p->pt[0]= POINT{ 200, 200 };
 		
-		objList.emplace_back(std::move(p));*/
+		objList.emplace_back(std::move(p));
 	}
 
-	void setHwnd(HWND hWnd_) { _hWnd = hWnd_; }
+	void setHwnd(HWND hWnd_) {
+		_hWnd = hWnd_; 
+		backBuffer.create(hWnd_);
+	}
 
 	void draw(HDC hdc_) const { 
 	
@@ -39,6 +43,8 @@ public:
 		if (tmpObj) {
 			tmpObj->draw(hdc_);
 		}
+
+		//backBuffer.draw(hdc_);
 
 	}
 
