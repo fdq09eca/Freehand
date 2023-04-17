@@ -11,49 +11,9 @@ public:
 	
 	Line() { _type = Type::Line; }
 
-	virtual bool onMouseEvent(const MouseEvent& ev) override {
-		
-		
-		if (ev.isUp() && ev.isLButton()) {
-			if (dragPoint >= 0 && dragPoint < 2) {
-				pt[dragPoint] = ev.pos;
-				dragPoint = -1;
-				hoverPoint = -1;
-				return true;
-			}
-		}
-		
-		else if (ev.isDown() && ev.isLButton()) {
-			if (hoverPoint >= 0 && hoverPoint < 2) {
-				dragPoint = hoverPoint;
-				return true;
-			}
-		}
-		
-		else if (ev.isMove()) {
+	virtual bool onMouseEvent(const MouseEvent& ev) override;
 
-			if (dragPoint >= 0 && dragPoint < 2 ) {
-				pt[dragPoint] = ev.pos;
-				return true;
-			}	
-			
-			hoverPoint = -1;
-			for (int i = 0; i < 2; i++) {
-				if (pt[i].inRange(ev.pos, 3)) {
-					// isHover
-					hoverPoint = i;
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	void onMouseLeftBtnDown(const MouseEvent& ev) {
-		pt[0] = ev.pos;
-		pt[1] = ev.pos;
-		dragPoint = 1;
-	}
+	void onCreate(const MouseEvent& ev);
 
 	void draw(HDC hdc_) const override {
 		MoveToEx(hdc_, pt[0].x, pt[0].y, nullptr);

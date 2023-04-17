@@ -4,13 +4,16 @@
 #include <memory>
 #include "Point.h"
 #include "Line.h"
+#include "Rect.h"
 #include "string"
+
 
 
 class App : NonCopyable
 {
 	HWND _hWnd = NULL;
 	BackBuffer backBuffer;
+	MouseButton mouseButtonState = MouseButton::NA; // 
 
 public:
 	std::vector<std::unique_ptr<AppObject>> objList;
@@ -19,15 +22,18 @@ public:
 
 	
 	App() = default;
-	~App() {  }
-
-	void init() {
-		auto p = std::make_unique<Line>();
-		p->pt[0]= POINT{ 100, 100 };
-		p->pt[0]= POINT{ 200, 200 };
-		
-		objList.emplace_back(std::move(p));
+	
+	std::string func(const std::string& s) {
+		std::string s1 = s + "11";
+		return s1; //(rvo) move(s1)
 	}
+	
+	~App() {  
+		std::string _s = "0";
+		_s = func(_s); // "011"
+	}
+
+	void init();
 
 	void setHwnd(HWND hWnd_);
 

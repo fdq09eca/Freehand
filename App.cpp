@@ -1,31 +1,37 @@
 #include "App.h"
 
+void App::init() {
+	auto p = std::make_unique<Line>();
+	p->pt[0] = POINT{ 200, 200 };
+	p->pt[1] = POINT{ 400, 400 };
+	objList.emplace_back(std::move(p));
+
+	auto r = std::make_unique<Rect>();
+	r->corners[0] = POINT{ 500, 500 };
+	r->corners[3] = POINT{ 600, 600 };
+	objList.emplace_back(std::move(r));
+}
+
 void App::setHwnd(HWND hWnd_) {
 	_hWnd = hWnd_;
+	backBuffer.create(_hWnd);
 }
 
 void App::draw(HDC hdc_)  {
-#if !true
-	for (const auto& p : objList) {
-		p->draw(hdc_);
-	}
-
-	if (tmpObj) { tmpObj->draw(hdc_); }
-#else
-	backBuffer.create(_hWnd);
+	backBuffer.clear();
+	
 	for (const auto& p : objList) {
 		p->draw(backBuffer.dc());
 	}
 	
-
 	if (tmpObj) {
 		tmpObj->draw(backBuffer.dc());
 	}
+
 	
 	backBuffer.draw(hdc_);
-	backBuffer.destroy();
-#endif
-
+	
+	
 
 }
 
@@ -57,8 +63,9 @@ void App::onMouseEvent(const MouseEvent& ev) {
 
 		if (ev.isDown()) {
 			if (ev.isLButton()) {
-				auto p = std::make_unique<Line>(); //create current selected Object
-				p->onMouseLeftBtnDown(ev); //onBeginCreateTmpObj
+				
+				auto p = std::make_unique<Rect>(); //create current selected Object
+				p->onCreate(ev); 
 				tmpObj = std::move(p);
 				return;
 			}

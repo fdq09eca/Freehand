@@ -132,6 +132,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="Freehand.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="AppObject.cpp" />
     <ClCompile Include="Freehand.cpp" />
     <ClCompile Include="Line.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
