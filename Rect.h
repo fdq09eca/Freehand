@@ -16,13 +16,14 @@ private:
 
 
 public:
-	Point corners[4]; 
+	Point corners[4];
 	Corner dragPoint = Corner::NONE;
 	Corner hoverPoint = Corner::NONE;
 
-	
 
-	Point& leftTop() { return corners[static_cast<int>(Corner::LEFT_TOP)];
+
+	Point& leftTop() {
+		return corners[static_cast<int>(Corner::LEFT_TOP)];
 	}
 	Point& leftBottom() { return corners[static_cast<int>(Corner::LEFT_BOTTOM)]; }
 	Point& rightTop() { return corners[static_cast<int>(Corner::RIGHT_TOP)]; }
@@ -49,11 +50,11 @@ public:
 			corners[static_cast<int>(c)] = *pos;
 			return;
 		}
-		
-		
+
+
 		switch (c)
 		{
-		
+
 		case Rect::Corner::LEFT_TOP: {
 			leftTop().x = leftBottom().x;
 			leftTop().y = rightTop().y;
@@ -62,7 +63,7 @@ public:
 
 		case Rect::Corner::LEFT_BOTTOM: {
 			leftBottom().x = leftTop().x;
-			leftBottom().y = rightBottom().y; 
+			leftBottom().y = rightBottom().y;
 			return;
 		}
 		case Rect::Corner::RIGHT_TOP: {
@@ -75,32 +76,50 @@ public:
 			rightBottom().y = leftBottom().y;
 			return;
 		}
-		
+
 		default: {
 			assert("corner update failed.");
 			return;
 		}
-			
+
 		}
 	}
 
 	virtual bool onMouseEvent(const MouseEvent& ev, const MouseButton& buttonState) override {
-		
+
 
 		if (ev.isLButton()) {
 			if (ev.isUp()) {
+				setDragPoint(Corner::NONE);
+				return true;
+			}
+
+			if (ev.isDown()) {
+				if (hoverPoint != Corner::NONE) {
+					setDragPoint(hoverPoint);
+					return true;
+				}
+				return false;
+			}
+		}
+
+		else if (ev.isMove()) {
+
+			if (buttonState == MouseButton::Left) {
 
 
 				switch (dragPoint) {
-				case Corner::NONE: { return false; }
 				default: { return false; }
+
+				case Corner::NONE: {
+					return false;
+				}
 
 
 				case Corner::LEFT_TOP: {
 					updateCorner(Corner::LEFT_TOP, &ev.pos);
 					updateCorner(Corner::RIGHT_TOP);
 					updateCorner(Corner::LEFT_BOTTOM);
-					setDragPoint(Corner::NONE);
 					return true;
 				}
 
@@ -108,7 +127,7 @@ public:
 					updateCorner(Corner::LEFT_BOTTOM, &ev.pos);
 					updateCorner(Corner::LEFT_TOP);
 					updateCorner(Corner::RIGHT_BOTTOM);
-					setDragPoint(Corner::NONE);
+
 					return true;
 				}
 
@@ -118,7 +137,7 @@ public:
 					updateCorner(Corner::LEFT_TOP);
 					updateCorner(Corner::RIGHT_BOTTOM);
 
-					setDragPoint(Corner::NONE);
+
 					return true;
 				}
 
@@ -127,26 +146,11 @@ public:
 					updateCorner(Corner::RIGHT_BOTTOM, &ev.pos);
 					updateCorner(Corner::LEFT_BOTTOM);
 					updateCorner(Corner::RIGHT_TOP);
-					setDragPoint(Corner::NONE);
+
 					return true;
 
 				}
 				}
-			}
-			if (ev.isDown()) {
-				//check if any point isHovered.
-				return false;
-			}
-
-		} else if (ev.isMove()) {
-
-			if (buttonState == MouseButton::Left) {
-
-			//printf("dragPoint = %i", (int) dragPoint);
-			if (dragPoint != Corner::NONE) {
-				corners[(int)dragPoint] = ev.pos;
-				return true;
-			}
 			}
 
 			hoverPoint = Corner::NONE;
@@ -158,13 +162,11 @@ public:
 					return true;
 				}
 			}
-			
+
 		}
 
 
 		return false;
-
-
 	}
 
 	void setDragPoint(Corner c) {
@@ -172,10 +174,9 @@ public:
 		hoverPoint = c;
 	}
 
-
-
 	virtual void draw(HDC hdc) const override {
 		Point lt = leftTop();
+
 		Point rb = rightBottom();
 		::Rectangle(hdc, lt.x, lt.y, rb.x, rb.y);
 		// TODO: draw hoverPoint.
