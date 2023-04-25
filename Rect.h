@@ -16,22 +16,23 @@ private:
 
 
 public:
-	Point corners[4]; //reduce computation.
+	Point corners[4]; 
 	Corner dragPoint = Corner::NONE;
 	Corner hoverPoint = Corner::NONE;
 
-	using C = Corner;
+	
 
-	Point& leftTop() { return corners[(int)C::LEFT_TOP]; }
-	Point& leftBottom() { return corners[(int)C::LEFT_BOTTOM]; }
-	Point& rightTop() { return corners[(int)C::RIGHT_TOP]; }
-	Point& rightBottom() { return corners[(int)C::RIGHT_BOTTOM]; }
+	Point& leftTop() { return corners[static_cast<int>(Corner::LEFT_TOP)];
+	}
+	Point& leftBottom() { return corners[static_cast<int>(Corner::LEFT_BOTTOM)]; }
+	Point& rightTop() { return corners[static_cast<int>(Corner::RIGHT_TOP)]; }
+	Point& rightBottom() { return corners[static_cast<int>(Corner::RIGHT_BOTTOM)]; }
 
 
-	const Point& leftTop()	 const { return corners[(int)C::LEFT_TOP]; }
-	const Point& leftBottom()	 const { return corners[(int)C::LEFT_BOTTOM]; }
-	const Point& rightTop()	 const { return corners[(int)C::RIGHT_TOP]; }
-	const Point& rightBottom() const { return corners[(int)C::RIGHT_BOTTOM]; }
+	const Point& leftTop()	 const { return corners[static_cast<int>(Corner::LEFT_TOP)]; }
+	const Point& leftBottom()	 const { return corners[static_cast<int>(Corner::LEFT_BOTTOM)]; }
+	const Point& rightTop()	 const { return corners[static_cast<int>(Corner::RIGHT_TOP)]; }
+	const Point& rightBottom() const { return corners[static_cast<int>(Corner::RIGHT_BOTTOM)]; }
 
 	//using LT = leftTop;
 
@@ -45,7 +46,7 @@ public:
 
 	void updateCorner(Corner c, const POINT* pos = nullptr) {
 		if (pos) {
-			corners[(int)c] = *pos;
+			corners[static_cast<int>(c)] = *pos;
 			return;
 		}
 		
@@ -138,23 +139,25 @@ public:
 			}
 
 		} else if (ev.isMove()) {
+
+			if (buttonState == MouseButton::Left) {
+
 			//printf("dragPoint = %i", (int) dragPoint);
 			if (dragPoint != Corner::NONE) {
 				corners[(int)dragPoint] = ev.pos;
 				return true;
 			}
+			}
 
 			hoverPoint = Corner::NONE;
+			const Corner checkCorners[] = { Corner::LEFT_TOP , Corner::LEFT_BOTTOM, Corner::RIGHT_TOP, Corner::RIGHT_BOTTOM };
 
-			// TODO: it is insane, change it.
-			for (int i = 0; i < 4; i++) {
-				if (corners[i].inRange(ev.pos, 3)) {
-					// isHover
-					hoverPoint = (Corner)i;
+			for (Corner c : checkCorners) {
+				if (corners[static_cast<int>(c)].inRange(ev.pos, 3)) {
+					hoverPoint = c;
 					return true;
 				}
 			}
-
 			
 		}
 
