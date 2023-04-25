@@ -35,8 +35,6 @@ public:
 	const Point& rightTop()	 const { return corners[static_cast<int>(Corner::RIGHT_TOP)]; }
 	const Point& rightBottom() const { return corners[static_cast<int>(Corner::RIGHT_BOTTOM)]; }
 
-	//using LT = leftTop;
-
 
 	void onCreate(const MouseEvent& ev) {
 		for (auto& pt : corners) {
@@ -91,12 +89,15 @@ public:
 		if (ev.isLButton()) {
 			if (ev.isUp()) {
 				setDragPoint(Corner::NONE);
+				printf("b::LeftIsUp: dragPoint %d hoverPoint %d\n", dragPoint, hoverPoint);
 				return true;
 			}
 
 			if (ev.isDown()) {
 				if (hoverPoint != Corner::NONE) {
 					setDragPoint(hoverPoint);
+					printf("b::LeftIsDown: dragPoint %d hoverPoint %d\n", dragPoint, hoverPoint);
+					
 					return true;
 				}
 				return false;
@@ -104,65 +105,64 @@ public:
 		}
 
 		else if (ev.isMove()) {
-
+			
 			if (buttonState == MouseButton::Left) {
-
-
+				printf("b::MoveAndLeftIsDown: dragPoint %d hoverPoint %d\n", dragPoint, hoverPoint);
 				switch (dragPoint) {
-				default: { return false; }
+					default: {
+						return false; 
+					}
 
-				case Corner::NONE: {
-					return false;
-				}
-
-
-				case Corner::LEFT_TOP: {
-					updateCorner(Corner::LEFT_TOP, &ev.pos);
-					updateCorner(Corner::RIGHT_TOP);
-					updateCorner(Corner::LEFT_BOTTOM);
-					return true;
-				}
-
-				case Corner::LEFT_BOTTOM: {
-					updateCorner(Corner::LEFT_BOTTOM, &ev.pos);
-					updateCorner(Corner::LEFT_TOP);
-					updateCorner(Corner::RIGHT_BOTTOM);
-
-					return true;
-				}
+					case Corner::NONE: {
+						return false;
+					}
 
 
-				case Corner::RIGHT_TOP: {
-					updateCorner(Corner::RIGHT_TOP, &ev.pos);
-					updateCorner(Corner::LEFT_TOP);
-					updateCorner(Corner::RIGHT_BOTTOM);
+					case Corner::LEFT_TOP: {
+						updateCorner(Corner::LEFT_TOP, &ev.pos);
+						updateCorner(Corner::RIGHT_TOP);
+						updateCorner(Corner::LEFT_BOTTOM);
+						return true;
+					}
+
+					case Corner::LEFT_BOTTOM: {
+						updateCorner(Corner::LEFT_BOTTOM, &ev.pos);
+						updateCorner(Corner::LEFT_TOP);
+						updateCorner(Corner::RIGHT_BOTTOM);
+						return true;
+					}
 
 
-					return true;
-				}
+					case Corner::RIGHT_TOP: {
+						updateCorner(Corner::RIGHT_TOP, &ev.pos);
+						updateCorner(Corner::LEFT_TOP);
+						updateCorner(Corner::RIGHT_BOTTOM);
+						return true;
+					}
 
 
-				case Corner::RIGHT_BOTTOM: {
-					updateCorner(Corner::RIGHT_BOTTOM, &ev.pos);
-					updateCorner(Corner::LEFT_BOTTOM);
-					updateCorner(Corner::RIGHT_TOP);
+					case Corner::RIGHT_BOTTOM: {
+						updateCorner(Corner::RIGHT_BOTTOM, &ev.pos);
+						updateCorner(Corner::LEFT_BOTTOM);
+						updateCorner(Corner::RIGHT_TOP);
+						return true;
 
-					return true;
-
-				}
+					}
 				}
 			}
+			else {
 
-			hoverPoint = Corner::NONE;
-			const Corner checkCorners[] = { Corner::LEFT_TOP , Corner::LEFT_BOTTOM, Corner::RIGHT_TOP, Corner::RIGHT_BOTTOM };
+				hoverPoint = Corner::NONE;
+				const Corner checkCorners[] = { Corner::LEFT_TOP , Corner::LEFT_BOTTOM, Corner::RIGHT_TOP, Corner::RIGHT_BOTTOM };
 
-			for (Corner c : checkCorners) {
-				if (corners[static_cast<int>(c)].inRange(ev.pos, 3)) {
-					hoverPoint = c;
-					return true;
+				for (Corner c : checkCorners) {
+					if (corners[static_cast<int>(c)].inRange(ev.pos, 3)) {
+						hoverPoint = c;
+						return true;
+					}
 				}
-			}
 
+			}
 		}
 
 
@@ -179,7 +179,6 @@ public:
 
 		Point rb = rightBottom();
 		::Rectangle(hdc, lt.x, lt.y, rb.x, rb.y);
-		// TODO: draw hoverPoint.
 
 		if (hoverPoint != Corner::NONE) {
 			corners[(int)hoverPoint].draw(hdc, 6);
