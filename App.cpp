@@ -39,14 +39,14 @@ void App::onMouseEvent(const MouseEvent& ev) {
 	
 	if (tmpObj) {
 		if (ev.isMove()) {
-			tmpObj->onMouseEvent(ev);
+			tmpObj->onMouseEvent(ev, mouseButtonState);
 			return;
 		}
 		
 
 		if (ev.isUp()) {
 			if (ev.isLButton()) {
-				tmpObj->onMouseEvent(ev); //onEndCreateTmpObj
+				tmpObj->onMouseEvent(ev, mouseButtonState); //onEndCreateTmpObj
 				objList.emplace_back(std::move(tmpObj));
 				tmpObj = nullptr;
 				return;
@@ -56,7 +56,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 	else {
 		
 		for (auto& p : objList) { 
-			if (p->onMouseEvent(ev)) {
+			if (p->onMouseEvent(ev, mouseButtonState)) {
 				return;
 			}
 		}
@@ -84,13 +84,13 @@ void App::_onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp) {
 		using B = MouseButton;
 		using T = MouseEventType;
 
-	case WM_LBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Left;   } break;
-	case WM_MBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Middle; } break;
-	case WM_RBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Right;  } break;
+	case WM_LBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Left;   mouseButtonState |=  B::Left;	} break;
+	case WM_MBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Middle; mouseButtonState |=  B::Middle;	} break;
+	case WM_RBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Right;  mouseButtonState |=  B::Right;	} break;
 	
-	case WM_LBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Left;   } break;
-	case WM_MBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Middle; } break;
-	case WM_RBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Right;  } break;
+	case WM_LBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Left;   mouseButtonState &= ~B::Left;	} break;
+	case WM_MBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Middle; mouseButtonState &= ~B::Middle;	} break;
+	case WM_RBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Right;  mouseButtonState &= ~B::Right;	} break;
 
 	case WM_MOUSEMOVE: { ev.eventType = T::Move; } break;
 	

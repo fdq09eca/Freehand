@@ -23,8 +23,38 @@ enum class MouseButton {
 	Left = 1 << 0,    // 1, 0001
 	Middle = 1 << 1,  // 2, 0010 
 	Right = 1 << 2,   // 4, 0100
-	
 };
+
+inline constexpr MouseButton operator& (MouseButton x, MouseButton y) {
+	return static_cast<MouseButton>(static_cast<int>(x) & static_cast<int>(y));
+}
+
+inline constexpr MouseButton operator| (MouseButton x, MouseButton y) {
+	return static_cast<MouseButton>(static_cast<int>(x) | static_cast<int>(y));
+}
+
+inline constexpr MouseButton operator^(MouseButton x, MouseButton y) {
+	return static_cast<MouseButton> (static_cast<int>(x) ^ static_cast<int>(y));
+}
+
+inline constexpr MouseButton operator~(MouseButton x) {
+	return static_cast<MouseButton>(~static_cast<int>(x));
+}
+
+inline MouseButton& operator&=(MouseButton& x, MouseButton y) {
+	x = x & y;
+	return x;
+}
+
+inline MouseButton& operator|=(MouseButton& x, MouseButton y) {
+	x = x | y;
+	return x;
+}
+
+inline MouseButton& operator^=(MouseButton& x, MouseButton y) {
+	x = x ^ y;
+	return x;
+}
 
 
 enum class MouseEventType {

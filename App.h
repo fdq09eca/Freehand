@@ -13,7 +13,7 @@ class App : NonCopyable
 {
 	HWND _hWnd = NULL;
 	BackBuffer backBuffer;
-	MouseButton mouseButtonState = MouseButton::NA; // 
+	MouseButton mouseButtonState = MouseButton::NA;
 
 public:
 	std::vector<std::unique_ptr<AppObject>> objList;

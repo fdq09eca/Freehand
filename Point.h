@@ -14,7 +14,10 @@ public:
 	}
 
 	POINT asPOINT() const { return POINT{ x, y }; }
+	
 	operator POINT () const { return asPOINT(); }
+	// operator POINT* () const { return &asPOINT(); } // does it work?
+	
 	
 	void operator=(const POINT& p) { *this = Point(p); }
 	

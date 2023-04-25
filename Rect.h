@@ -20,16 +20,18 @@ public:
 	Corner dragPoint = Corner::NONE;
 	Corner hoverPoint = Corner::NONE;
 
-	Point& leftTop() { return corners[(int)Corner::LEFT_TOP]; }
-	Point& leftBottom() { return corners[(int)Corner::LEFT_BOTTOM]; }
-	Point& rightTop() { return corners[(int)Corner::RIGHT_TOP]; }
-	Point& rightBottom() { return corners[(int)Corner::RIGHT_BOTTOM]; }
+	using C = Corner;
+
+	Point& leftTop() { return corners[(int)C::LEFT_TOP]; }
+	Point& leftBottom() { return corners[(int)C::LEFT_BOTTOM]; }
+	Point& rightTop() { return corners[(int)C::RIGHT_TOP]; }
+	Point& rightBottom() { return corners[(int)C::RIGHT_BOTTOM]; }
 
 
-	const Point& leftTop()	 const { return corners[(int)Corner::LEFT_TOP]; }
-	const Point& leftBottom()	 const { return corners[(int)Corner::LEFT_BOTTOM]; }
-	const Point& rightTop()	 const { return corners[(int)Corner::RIGHT_TOP]; }
-	const Point& rightBottom() const { return corners[(int)Corner::RIGHT_BOTTOM]; }
+	const Point& leftTop()	 const { return corners[(int)C::LEFT_TOP]; }
+	const Point& leftBottom()	 const { return corners[(int)C::LEFT_BOTTOM]; }
+	const Point& rightTop()	 const { return corners[(int)C::RIGHT_TOP]; }
+	const Point& rightBottom() const { return corners[(int)C::RIGHT_BOTTOM]; }
 
 	//using LT = leftTop;
 
@@ -81,7 +83,7 @@ public:
 		}
 	}
 
-	virtual bool onMouseEvent(const MouseEvent& ev) override {
+	virtual bool onMouseEvent(const MouseEvent& ev, const MouseButton& buttonState) override {
 		
 
 		if (ev.isLButton()) {

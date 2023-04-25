@@ -28,7 +28,7 @@ public:
 	AppObject() { reset(); }
 	virtual ~AppObject() { }
 	virtual void draw(HDC hdc_) const { };
-	virtual bool onMouseEvent(const MouseEvent& e) { return false; }
+	virtual bool onMouseEvent(const MouseEvent& e, const MouseButton& b) { return false; }
 	Type type() const { return _type; }
 
 };
