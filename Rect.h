@@ -107,7 +107,7 @@ public:
 		else if (ev.isMove()) {
 			
 			if (buttonState == MouseButton::Left) {
-				printf("b::MoveAndLeftIsDown: dragPoint %d hoverPoint %d\n", dragPoint, hoverPoint);
+				printf("b::MoveAndLeftIsDown: dragPoint %d hoverPoint %d\n", dragPoint, hoverPoint); //bug here, create 2 rect and drag to reproduce.
 				switch (dragPoint) {
 					default: {
 						return false; 
