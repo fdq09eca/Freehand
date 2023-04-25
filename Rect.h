@@ -96,8 +96,7 @@ public:
 			if (ev.isDown()) {
 				if (hoverPoint != Corner::NONE) {
 					setDragPoint(hoverPoint);
-					printf("b::LeftIsDown: dragPoint %d hoverPoint %d\n", dragPoint, hoverPoint);
-					
+					printf("b::LeftIsDown: dragPoint %d hoverPoint %d\n", dragPoint, hoverPoint);	
 					return true;
 				}
 				return false;
@@ -152,7 +151,7 @@ public:
 			}
 			else {
 
-				hoverPoint = Corner::NONE;
+				setDragPoint(Corner::NONE);
 				const Corner checkCorners[] = { Corner::LEFT_TOP , Corner::LEFT_BOTTOM, Corner::RIGHT_TOP, Corner::RIGHT_BOTTOM };
 
 				for (Corner c : checkCorners) {
@@ -161,7 +160,7 @@ public:
 						return true;
 					}
 				}
-
+				return false;
 			}
 		}
 
