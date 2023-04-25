@@ -24,7 +24,8 @@ bool Line::onMouseEvent(const MouseEvent& ev, const MouseButton& buttonState) {
 			pt[dragPoint] = ev.pos;
 			return true;
 		}
-
+		
+		//dragPoint = -1; //should i ?
 		hoverPoint = -1;
 		for (int i = 0; i < 2; i++) {
 			if (pt[i].inRange(ev.pos, 3)) {
