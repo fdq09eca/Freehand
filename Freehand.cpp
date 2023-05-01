@@ -10,12 +10,11 @@
 
 // Global Variables:
 
-
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-App app;
+
 AppObjectType cuurentAppObjType = AppObjectType::Line;
 
 // Forward declarations of functions included in this code module:
@@ -38,7 +37,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadStringW(hInstance, IDC_FREEHAND, szWindowClass, MAX_LOADSTRING);
 	MyRegisterClass(hInstance);
-
+	App app;
+	app.init();
 	// Perform application initialization:
 	if (!InitInstance(hInstance, nCmdShow))
 	{
@@ -46,7 +46,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_FREEHAND));
-	app.init();
+	
+	
+	
 	MSG msg;
 
 	// Main message loop:
@@ -111,7 +113,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	{
 		return FALSE;
 	}
-	app.setHwnd(hWnd);
+	
+	App::Instance()->setHwnd(hWnd);
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -166,7 +169,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONUP: 
 	case WM_MBUTTONUP: 
 	case WM_RBUTTONUP: 
-	case WM_MOUSEMOVE: { app._onWin32MouseEvent(message, wParam, lParam); } break;
+	case WM_MOUSEMOVE: { App::Instance()->_onWin32MouseEvent(message, wParam, lParam); } break;
 
 	
 	case WM_PAINT:
@@ -175,7 +178,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HDC hdc = BeginPaint(hWnd, &ps);
 	
 		
-		app.draw(hdc);
+		App::Instance()->draw(hdc);
 		// TODO: Add any drawing code that uses hdc here...
 		EndPaint(hWnd, &ps);
 	}

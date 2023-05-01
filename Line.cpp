@@ -1,6 +1,6 @@
 #include "Line.h"
 
-bool Line::onMouseEvent(const MouseEvent& ev, const MouseButton& buttonState) {
+bool Line::onMouseEvent(const MouseEvent& ev) {
 
 	if (ev.isUp() && ev.isLButton()) {
 		if (dragPoint >= 0 && dragPoint < 2) {
@@ -25,7 +25,7 @@ bool Line::onMouseEvent(const MouseEvent& ev, const MouseButton& buttonState) {
 			return true;
 		}
 		
-		//dragPoint = -1; //should i ?
+		
 		hoverPoint = -1;
 		for (int i = 0; i < 2; i++) {
 			if (pt[i].inRange(ev.pos, 3)) {

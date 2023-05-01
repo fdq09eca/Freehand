@@ -1,36 +1,36 @@
 #pragma once
-#include "AppObject.h"
 #include <vector>
 #include <memory>
-#include "Point.h"
-#include "Line.h"
-#include "Rect.h"
-#include "string"
+#include "AppObject.h"
 
-
+class Rect;
 
 class App : NonCopyable
 {
+private:
+	static App* _instance;
 	HWND _hWnd = NULL;
 	BackBuffer backBuffer;
-	MouseButton mouseButtonState = MouseButton::NA;
+	MouseButton _mouseButtonState = MouseButton::NA;
+
+
 
 public:
+	
 	std::vector<std::unique_ptr<AppObject>> objList;
 	std::unique_ptr<AppObject> tmpObj;
+	AppObject* captureObj = nullptr;
 	
 
 	
 	App() = default;
 	
-	std::string func(const std::string& s) {
-		std::string s1 = s + "11";
-		return s1; //(rvo) move(s1)
-	}
+	static App* Instance() { return _instance; }
 	
 	~App() {  
-		std::string _s = "0";
-		_s = func(_s); // "011"
+		if (captureObj) {
+			captureObj = nullptr; // it should not be deleted.
+		}
 	}
 
 	void init();
@@ -42,12 +42,16 @@ public:
 	void onMouseEvent(const MouseEvent& ev);
 
 	void _onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp);
-	
 
+	void setCaptureObject(AppObject* obj);;
 	
-	
-	
-	
+	void clearCaptureObject();
+
+	MouseButton mouseButtonState() const { return _mouseButtonState; }
 
 };
 
+extern App* g_internal_app_ptr;
+
+inline App* g_app() { return g_internal_app_ptr; };
+inline void g_set_app(App* p) { g_internal_app_ptr = p; };

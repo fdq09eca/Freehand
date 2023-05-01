@@ -11,7 +11,7 @@ public:
 	
 	Line() { _type = Type::Line; }
 
-	virtual bool onMouseEvent(const MouseEvent& ev, const MouseButton& buttonState) override;
+	virtual bool onMouseEvent(const MouseEvent& ev) override;
 
 	void onCreate(const MouseEvent& ev);
 

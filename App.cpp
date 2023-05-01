@@ -1,6 +1,14 @@
 #include "App.h"
+#include "Line.h"
+#include "Rect.h"
+
+App* App::_instance = nullptr;
 
 void App::init() {
+	assert(_instance == nullptr);
+	_instance = this;
+	
+	
 	auto p = std::make_unique<Line>();
 	p->pt[0] = POINT{ 200, 200 };
 	p->pt[1] = POINT{ 400, 400 };
@@ -39,14 +47,14 @@ void App::onMouseEvent(const MouseEvent& ev) {
 	
 	if (tmpObj) {
 		if (ev.isMove()) {
-			tmpObj->onMouseEvent(ev, mouseButtonState);
+			tmpObj->onMouseEvent(ev);
 			return;
 		}
 		
 
 		if (ev.isUp()) {
 			if (ev.isLButton()) {
-				tmpObj->onMouseEvent(ev, mouseButtonState); //onEndCreateTmpObj
+				tmpObj->onMouseEvent(ev); //onEndCreateTmpObj
 				objList.emplace_back(std::move(tmpObj));
 				tmpObj = nullptr;
 				return;
@@ -54,9 +62,14 @@ void App::onMouseEvent(const MouseEvent& ev) {
 		}
 	}
 	else {
-		
+		if (captureObj) {
+			captureObj->onMouseEvent(ev);
+			return;
+		}
+
+
 		for (auto& p : objList) { 
-			if (p->onMouseEvent(ev, mouseButtonState)) {
+			if (p->onMouseEvent(ev)) {
 				return;
 			}
 		}
@@ -84,13 +97,13 @@ void App::_onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp) {
 		using B = MouseButton;
 		using T = MouseEventType;
 
-	case WM_LBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Left;   mouseButtonState |=  B::Left;	} break;
-	case WM_MBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Middle; mouseButtonState |=  B::Middle;	} break;
-	case WM_RBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Right;  mouseButtonState |=  B::Right;	} break;
+	case WM_LBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Left;   _mouseButtonState |=  B::Left;	} break;
+	case WM_MBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Middle; _mouseButtonState |=  B::Middle;	} break;
+	case WM_RBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Right;  _mouseButtonState |=  B::Right;	} break;
 	
-	case WM_LBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Left;   mouseButtonState &= ~B::Left;	} break;
-	case WM_MBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Middle; mouseButtonState &= ~B::Middle;	} break;
-	case WM_RBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Right;  mouseButtonState &= ~B::Right;	} break;
+	case WM_LBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Left;   _mouseButtonState &= ~B::Left;	} break;
+	case WM_MBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Middle; _mouseButtonState &= ~B::Middle;	} break;
+	case WM_RBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Right;  _mouseButtonState &= ~B::Right;	} break;
 
 	case WM_MOUSEMOVE: { ev.eventType = T::Move; } break;
 	
@@ -102,4 +115,14 @@ void App::_onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp) {
 	onMouseEvent(ev);
 	InvalidateRect(_hWnd, nullptr, false);
 
+}
+
+void App::setCaptureObject(AppObject* obj) {
+	captureObj = obj;
+	printf("[set] captureObj [id: %d]\n", obj->id);
+}
+
+void App::clearCaptureObject() {
+	printf("[clear] captureObj [id: %d]\n", captureObj->id);
+	captureObj = nullptr;
 }

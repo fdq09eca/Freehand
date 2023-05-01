@@ -25,10 +25,17 @@ protected:
 	}
 
 public:
-	AppObject() { reset(); }
+	int id = 0;
+	
+	AppObject() { 
+		static int next_id = 0;
+		id = next_id;
+		next_id++;
+		reset(); 
+	}
 	virtual ~AppObject() { }
 	virtual void draw(HDC hdc_) const { };
-	virtual bool onMouseEvent(const MouseEvent& e, const MouseButton& b) { return false; }
+	virtual bool onMouseEvent(const MouseEvent& e) { return false; }
 	Type type() const { return _type; }
 
 };
