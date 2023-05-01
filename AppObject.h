@@ -17,15 +17,7 @@ public:
 	using Type = AppObjectType;
 
 protected:
-
 	Type _type = Type::AppObject;
-	bool _isSelected : 1;
-	bool _isHovered : 1;
-	
-	void reset() {
-		_isSelected = false;
-		_isHovered = false;
-	}
 
 public:
 	int id = 0;
@@ -34,7 +26,6 @@ public:
 		static int next_id = 0;
 		id = next_id;
 		next_id++;
-		reset(); 
 	}
 	
 	virtual ~AppObject() { }
@@ -45,11 +36,12 @@ public:
 	const char* typeAsString() const {
 		switch (_type)
 		{
-			case Type::NA: { return "NA"; }
-			case Type::Line: { return "Line"; }
-			case Type::Rect: { return "Rect"; }
-			case Type::Curve: { return "Curve"; }
-			case Type::AppObject: { return "AppObject"; }
+			case Type::NA:			{ return "NA"; }
+			case Type::AppObject:	{ return "AppObject"; }
+			case Type::Point:		{ return "Point"; }
+			case Type::Line:		{ return "Line"; }
+			case Type::Rect:		{ return "Rect"; }
+			case Type::Curve:		{ return "Curve"; }
 			default: break;
 		}
 		assert(false);

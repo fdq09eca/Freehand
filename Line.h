@@ -1,5 +1,6 @@
 #pragma once
 #include "Point.h"
+#include "AppObject.h"
 
 class Line : public AppObject
 {
