@@ -136,6 +136,11 @@ void Rect::draw(HDC hdc) const {
 	Point lt = leftTop();
 
 	Point rb = rightBottom();
+
+	
+
+	SelectBrush(hdc, CreateSolidBrush(RGB(0, 255, 0))); // color does not work.
+
 	::Rectangle(hdc, lt.x, lt.y, rb.x, rb.y);
 
 	if (hoverPoint != Corner::NONE) {

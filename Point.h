@@ -29,8 +29,18 @@ public:
 	inline void operator*=(const Point& p) { x *= p.x; y *= p.y; }
 	inline void operator/=(const Point& p) { x /= p.x; y /= p.y; }
 
+	inline Point operator*(int v) const { return Point(x * v, y * v); }
+	inline Point operator/(int v) const { return Point(x / v, y / v); }
+
+	inline void operator*=(int v) { x *= v; y *= v; }
+	inline void operator/=(int v) { x /= v; y /= v; }
+
+	
+
 	inline bool operator!=(const Point& p) const { return p.x == x || p.y == y; }
 	inline bool operator==(const Point& p) const { return !operator!=(p);		 }
+
+
 
 	bool inRange(const Point& p, int range) const;
 

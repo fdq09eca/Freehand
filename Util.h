@@ -102,7 +102,7 @@ public:
 		GetClientRect(hWnd_, &rc);
 		_h = rc.bottom - rc.top;
 		_w = rc.right - rc.left;
-		_bitmap = CreateCompatibleBitmap(_dc, _w, _h);
+		_bitmap = CreateCompatibleBitmap(wndDC, _w, _h); //https://stackoverflow.com/questions/7134465/the-result-of-createcompatibledc-only-has-two-colors
 		SelectObject(_dc, _bitmap);
 		_bgColor = (HBRUSH)GetStockObject(WHITE_BRUSH);
 		

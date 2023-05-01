@@ -16,18 +16,18 @@ public:
 
 	void onCreate(const MouseEvent& ev);
 
-	void draw(HDC hdc_) const override;
 
 	inline void clearHoverPoint()	{ clearDragPoint(); }
 	inline void clearDragPoint()	{ dragPoint = -1; hoverPoint = -1; } // no drag, no hover
 	inline void setDragPoint(int i) { dragPoint =  i; hoverPoint =  i; } // no drag, no hover
 
 	bool updateHoverPoint(const MouseEvent ev, const Point* points, int nPoints);
-
 	
+	Point lerp(int t = 0) const;
 
+	void draw(HDC hdc_) const override;
+	
+	void drawDash(HDC hdc_) const;
 
-	
-	
 };
 

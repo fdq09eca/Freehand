@@ -7,8 +7,13 @@ App* App::_instance = nullptr;
 void App::init() {
 	assert(_instance == nullptr);
 	_instance = this;
+
+	// create pen and brush..
+	dashPen = ::CreatePen(PS_DOT, 1, RGB(255, 0, 0)); // red dash pen
 	
 	
+	// for testing purpose...
+
 	auto p = std::make_unique<Line>();
 	p->pt[0] = POINT{ 200, 200 };
 	p->pt[1] = POINT{ 400, 400 };
@@ -38,9 +43,6 @@ void App::draw(HDC hdc_)  {
 
 	
 	backBuffer.draw(hdc_);
-	
-	
-
 }
 
 void App::onMouseEvent(const MouseEvent& ev) {

@@ -13,4 +13,5 @@ bool Point::inRange(const Point& p, int range) const {
 void Point::draw(HDC hdc_, int size) const {
 	int s = size / 2;
 	Rectangle(hdc_, x - s, y - s, x + s, y + s);
+	
 }

@@ -41,9 +41,14 @@ void Line::onCreate(const MouseEvent& ev) {
 }
 
 void Line::draw(HDC hdc_) const {
+	
+	
 	MoveToEx(hdc_, pt[0].x, pt[0].y, nullptr);
 	LineTo(hdc_, pt[1].x, pt[1].y);
-
+	
+	SelectObject(hdc_, oldPen);
+	
+	
 	assert(hoverPoint < 2);
 	if (hoverPoint >= 0 && hoverPoint < 2) {
 		pt[hoverPoint].draw(hdc_, 6);
@@ -63,4 +68,15 @@ bool Line::updateHoverPoint(const MouseEvent ev, const Point* points, int nPoint
 
 	return false;
 
+}
+
+Point Line::lerp(int t) const {
+	assert(t >= 0 && t <= 1);
+	return pt[0] * (1 - t) + pt[1] * t;
+}
+
+void Line::drawDash(HDC hdc_) const {
+	auto oldPen = SelectObject(hdc_, App::Instance()->dashPen);
+	draw(hdc_);
+	SelectObject(hdc_, oldPen);
 }

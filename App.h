@@ -16,6 +16,7 @@ private:
 
 
 public:
+	HPEN dashPen;
 	
 	std::vector<std::unique_ptr<AppObject>> objList;
 	std::unique_ptr<AppObject> tmpObj;
@@ -28,9 +29,10 @@ public:
 	static App* Instance() { return _instance; }
 	
 	~App() {  
-		if (captureObj) {
-			captureObj = nullptr; // it should not be deleted.
+		if (captureObj) { 
+			captureObj = nullptr; // it should not be deleted. 
 		}
+		DeleteObject(dashPen);
 	}
 
 	void init();
