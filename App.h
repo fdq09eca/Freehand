@@ -43,7 +43,7 @@ public:
 
 	void _onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp);
 
-	void setCaptureObject(AppObject* obj);;
+	void setCaptureObject(AppObject* obj);
 	
 	void clearCaptureObject();
 

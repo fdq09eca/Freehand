@@ -15,17 +15,13 @@ public:
 
 	void onCreate(const MouseEvent& ev);
 
-	void draw(HDC hdc_) const override {
-		MoveToEx(hdc_, pt[0].x, pt[0].y, nullptr);
-		LineTo  (hdc_, pt[1].x, pt[1].y);
-		
-		assert(hoverPoint < 2);
-		if (hoverPoint >= 0 && hoverPoint < 2) { 
-			pt[hoverPoint].draw(hdc_, 6); 
-		}
-		
-		
-	}
+	void draw(HDC hdc_) const override;
+
+	inline void clearHoverPoint()	{ clearDragPoint(); }
+	inline void clearDragPoint()	{ dragPoint = -1; hoverPoint = -1; } // no drag, no hover
+	inline void setDragPoint(int i) { dragPoint =  i; hoverPoint =  i; } // no drag, no hover
+
+	bool updateHoverPoint(const MouseEvent ev, const Point* points, int nPoints);
 
 	
 

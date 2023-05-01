@@ -1,5 +1,4 @@
 #pragma once
-
 #include "AppObject.h"
 #include "Point.h"
 
@@ -17,6 +16,8 @@ private:
 
 
 public:
+	Rect() { _type = Type::Rect; }
+
 	Point corners[4];
 	Corner dragPoint = Corner::NONE;
 	Corner hoverPoint = Corner::NONE;

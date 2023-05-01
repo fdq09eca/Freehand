@@ -77,7 +77,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 		if (ev.isDown()) {
 			if (ev.isLButton()) {
 				
-				auto p = std::make_unique<Rect>(); //create current selected Object
+				auto p = std::make_unique<Line>(); //create current selected Object
 				p->onCreate(ev); 
 				tmpObj = std::move(p);
 				return;
@@ -118,11 +118,13 @@ void App::_onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp) {
 }
 
 void App::setCaptureObject(AppObject* obj) {
+	assert(captureObj == nullptr);
 	captureObj = obj;
-	printf("[set] captureObj [id: %d]\n", obj->id);
+	printf("[set] captureObj [%s id: %d]\n", obj->typeAsString(), obj->id);
 }
 
 void App::clearCaptureObject() {
-	printf("[clear] captureObj [id: %d]\n", captureObj->id);
+	assert(captureObj != nullptr);
+	printf("[clear] captureObj [%s id: %d]\n", captureObj->typeAsString(), captureObj->id);
 	captureObj = nullptr;
 }

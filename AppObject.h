@@ -6,6 +6,9 @@ enum class AppObjectType {
 	AppObject,
 	Point,
 	Line,
+	Rect,
+	Curve,
+	/*Circle,*/
 };
 
 class AppObject : NonCopyable {
@@ -33,10 +36,25 @@ public:
 		next_id++;
 		reset(); 
 	}
+	
 	virtual ~AppObject() { }
 	virtual void draw(HDC hdc_) const { };
 	virtual bool onMouseEvent(const MouseEvent& e) { return false; }
 	Type type() const { return _type; }
+	
+	const char* typeAsString() const {
+		switch (_type)
+		{
+			case Type::NA: { return "NA"; }
+			case Type::Line: { return "Line"; }
+			case Type::Rect: { return "Rect"; }
+			case Type::Curve: { return "Curve"; }
+			case Type::AppObject: { return "AppObject"; }
+			default: break;
+		}
+		assert(false);
+		return "[ERR] Unknown Type";
+	}
 
 };
 
