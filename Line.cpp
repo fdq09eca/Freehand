@@ -46,7 +46,6 @@ void Line::draw(HDC hdc_) const {
 	MoveToEx(hdc_, pt[0].x, pt[0].y, nullptr);
 	LineTo(hdc_, pt[1].x, pt[1].y);
 	
-	SelectObject(hdc_, oldPen);
 	
 	
 	assert(hoverPoint < 2);
