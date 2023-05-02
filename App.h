@@ -16,8 +16,9 @@ private:
 
 
 public:
-	HPEN dashPen;
-	HPEN solidPen;
+	HPEN dashRedPen;
+	HBRUSH solidRedBrush;
+	HPEN solidBlackPen;
 	
 	std::vector<std::unique_ptr<AppObject>> objList;
 	std::unique_ptr<AppObject> tmpObj;
@@ -33,8 +34,9 @@ public:
 		if (captureObj) { 
 			captureObj = nullptr; // it should not be deleted. 
 		}
-		DeleteObject(dashPen);
-		DeleteObject(solidPen);
+		DeleteObject(dashRedPen);
+		DeleteObject(solidBlackPen);
+		DeleteObject(solidRedBrush);
 	}
 
 	void init();

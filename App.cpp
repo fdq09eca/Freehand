@@ -10,8 +10,9 @@ void App::init() {
 	_instance = this;
 
 	// create pen and brush..
-	dashPen = ::CreatePen(PS_DOT, 1, RGB(255, 0, 0)); // red dash pen
-	solidPen = ::CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // black solid pen
+	dashRedPen = ::CreatePen(PS_DOT, 1, RGB(255, 0, 0)); // red dash pen
+	solidBlackPen = ::CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // black solid pen
+	solidRedBrush = ::CreateSolidBrush(RGB(255, 0, 0)); // red solid brush
 	
 	
 	// for testing purpose...
@@ -80,7 +81,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 
 		if (ev.isDown()) {
 			if (ev.isLButton()) {
-				auto p = std::make_unique<Curve>(); //create current selected Object
+				auto p = std::make_unique<Curve>();
 				p->onCreate(ev); 
 				tmpObj = std::move(p);
 				return;

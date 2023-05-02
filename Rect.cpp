@@ -144,7 +144,7 @@ void Rect::draw(HDC hdc) const {
 	::Rectangle(hdc, lt.x, lt.y, rb.x, rb.y);
 
 	if (hoverPoint != Corner::NONE) {
-		corners[(int)hoverPoint].draw(hdc, 6);
+		corners[(int)hoverPoint].draw(hdc, 6, true);
 	}
 }
 

@@ -28,7 +28,7 @@ public:
 	void drawCurve(HDC hdc) const;
 	
 	virtual bool onMouseEvent(const MouseEvent& ev);
-	bool onMouseEvent_beforeCreationCompleted(const MouseEvent& ev);
+	
 
 	
 };

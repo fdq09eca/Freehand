@@ -51,7 +51,7 @@ void Curve::drawCurve(HDC hdc) const { // https://www.youtube.com/watch?v=pnYccz
 
 		Point c = Line::lerp(q0, q1, t);
 
-		Line::drawLine(hdc, prevPoint, c, App::Instance()->solidPen);
+		Line::drawLine(hdc, prevPoint, c, App::Instance()->solidBlackPen);
 		prevPoint = c;
 	
 	}
@@ -68,11 +68,15 @@ void Curve::draw(HDC hdc) const {
 			if (i == nPoints - 1) break;
 
 			if (i + 1 <= createPoint) {
-				Line::drawLine(hdc, pts[i], pts[i + 1], App::Instance()->dashPen);
+				Line::drawLine(hdc, pts[i], pts[i + 1], App::Instance()->dashRedPen);
 			}
 		}
 		if (isCreated()) {
 			drawCurve(hdc);
+		}
+
+		if (hoverPoint >= 0 && hoverPoint < nPoints) {
+			pts[hoverPoint].draw(hdc, 6, true);
 		}
 	}
 
@@ -141,9 +145,4 @@ bool Curve::onMouseEvent(const MouseEvent& ev) { // break it into beforeCreation
 	return false;
 }
 
-bool Curve::onMouseEvent_beforeCreationCompleted(const MouseEvent& ev)
-{
-	assert(!isCreated());
-	// move all mouse event before creation here.
-	return false;
-}
+

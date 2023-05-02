@@ -38,9 +38,6 @@ public:
 	inline Point operator*(float v) const { return Point(x * v, y * v); }
 	inline Point operator/(float v) const { return Point(x / v, y / v); }
 
-	inline void operator*=(float v) { x *= v; y *= v; }
-	inline void operator/=(float v) { x /= v; y /= v; }
-
 	
 
 	inline bool operator!=(const Point& p) const { return p.x == x || p.y == y; }
@@ -48,7 +45,8 @@ public:
 
 	bool inRange(const Point& p, int range) const;
 
-	void draw(HDC hdc_, int size) const;
+	void draw(HDC hdc_, int size, bool isHover = false) const;
+	void draw(HDC hdc_, int size, HPEN hpen, HBRUSH) const;
 
 };
 
