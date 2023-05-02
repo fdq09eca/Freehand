@@ -53,14 +53,18 @@ void Line::draw(HDC hdc_) const {
 	}
 }
 
-void Line::drawDash(HDC hdc_, const Point& pt0, const Point& pt1) {
-	auto oldPen = SelectObject(hdc_, App::Instance()->dashPen);
+
+
+void Line::drawLine(HDC hdc_, const Point& pt0, const Point& pt1, HPEN hPen) {
+	auto oldPen = SelectObject(hdc_, hPen);
 
 	MoveToEx(hdc_, pt0.x, pt0.y, nullptr);
 	LineTo(hdc_, pt1.x, pt1.y);
 
 	SelectObject(hdc_, oldPen);
 }
+
+
 
 bool Line::updateHoverPoint(const MouseEvent ev, const Point* points, int nPoints) {
 	assert(points != nullptr);
@@ -77,8 +81,11 @@ bool Line::updateHoverPoint(const MouseEvent ev, const Point* points, int nPoint
 
 }
 
-Point Line::lerp(int t) const {
-	assert(t >= 0 && t <= 1);
-	return pt[0] * (1 - t) + pt[1] * t;
+
+
+Point Line::lerp(const Point& p0, const Point& p1, float t)
+{
+	assert(t >= 0.0f && t <= 1.0f);
+	return p0 * (1.0f - t) + p1 * t;
 }
 

@@ -11,6 +11,7 @@ void App::init() {
 
 	// create pen and brush..
 	dashPen = ::CreatePen(PS_DOT, 1, RGB(255, 0, 0)); // red dash pen
+	solidPen = ::CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // black solid pen
 	
 	
 	// for testing purpose...

@@ -35,6 +35,12 @@ public:
 	inline void operator*=(int v) { x *= v; y *= v; }
 	inline void operator/=(int v) { x /= v; y /= v; }
 
+	inline Point operator*(float v) const { return Point(x * v, y * v); }
+	inline Point operator/(float v) const { return Point(x / v, y / v); }
+
+	inline void operator*=(float v) { x *= v; y *= v; }
+	inline void operator/=(float v) { x /= v; y /= v; }
+
 	
 
 	inline bool operator!=(const Point& p) const { return p.x == x || p.y == y; }

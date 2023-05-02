@@ -23,10 +23,12 @@ public:
 
 	bool updateHoverPoint(const MouseEvent ev, const Point* points, int nPoints);
 	
-	Point lerp(int t = 0) const;
+	
+	static Point lerp(const Point& p0, const Point& p1, float t = 0);
 
 	void draw(HDC hdc_) const override;
 
-	static void drawDash(HDC hdc_, const Point& pt0, const Point& pt1);
+	static void drawLine(HDC hdc_, const Point& pt0, const Point& pt1, HPEN hpen);
+	
 };
 

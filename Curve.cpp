@@ -30,12 +30,33 @@ inline void Curve::onLeftBtnDrag(const MouseEvent& ev) {
 	printf("[%s id %d] [dragging] dragPoint: %d\n", typeAsString(), id, dragPoint);
 }
 
-inline void Curve::drawCurve(HDC hdc) const {
+inline void Curve::drawCurve(HDC hdc) const { // https://www.youtube.com/watch?v=pnYccz1Ha34
+	assert(isCreated());
+	
+	Point prevPoint = pts[0];
+
+	for (int v = 1; v <= 100; v += 1) {
+		
+		float t = static_cast<float>(v) / 100.0f;
+
+		Point l0 = Line::lerp(pts[0], pts[1], t);
+		Point l1 = Line::lerp(pts[1], pts[2], t);
+		Point l2 = Line::lerp(pts[2], pts[3], t);
+
+		Point q0 = Line::lerp(l0, l1, t);
+		Point q1 = Line::lerp(l1, l2, t);
+
+		Point c = Line::lerp(q0, q1, t);
+
+		Line::drawLine(hdc, prevPoint, c, App::Instance()->solidPen);
+		prevPoint = c;
+		//SetPixel(hdc, c.x, c.y, RGB(255, 0, 0));
+	}
+
 	printf("drawCurve();\n");
 }
 
 void Curve::draw(HDC hdc) const {
-	
 
 		assert(createPoint >= 0);
 		for (int i = 0; i < createPoint + 1; i++) {
@@ -43,8 +64,8 @@ void Curve::draw(HDC hdc) const {
 
 			if (i == nPoints - 1) break;
 
-			if (i + 1 < createPoint + 1) {
-				Line::drawDash(hdc, pts[i], pts[i + 1]);
+			if (i + 1 <= createPoint) {
+				Line::drawLine(hdc, pts[i], pts[i + 1], App::Instance()->dashPen);
 			}
 		}
 		if (isCreated()) {
