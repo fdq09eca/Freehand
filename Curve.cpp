@@ -50,10 +50,10 @@ inline void Curve::drawCurve(HDC hdc) const { // https://www.youtube.com/watch?v
 
 		Line::drawLine(hdc, prevPoint, c, App::Instance()->solidPen);
 		prevPoint = c;
-		//SetPixel(hdc, c.x, c.y, RGB(255, 0, 0));
+	
 	}
 
-	printf("drawCurve();\n");
+	
 }
 
 void Curve::draw(HDC hdc) const {
