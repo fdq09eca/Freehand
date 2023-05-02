@@ -6,7 +6,7 @@
 class Curve : public AppObject
 {
 public:
-	static const int nPoints = 4; // why not const int nPoints = 4
+	static const int nPoints = 4;
 	Point pts[nPoints];
 	Curve() { _type = Type::Curve; }
 	int hoverPoint = -1;
@@ -24,9 +24,8 @@ public:
 
 	void onLeftBtnDrag(const MouseEvent& ev);
 	
-	void drawCurve(HDC hdc) const;
-
 	virtual void draw(HDC hdc) const override;
+	void drawCurve(HDC hdc) const;
 	
 	virtual bool onMouseEvent(const MouseEvent& ev);
 
