@@ -15,7 +15,7 @@ public:
 
 	void onCreate(const MouseEvent& ev);
 
-	inline bool isCreated() const { return !(createPoint >= -1 && createPoint < 4); }
+	inline bool isCreated() const { return createPoint >= nPoints; }
 	inline void clearHoverPoint() { clearDragPoint(); }
 	inline void clearDragPoint() { dragPoint = -1; hoverPoint = -1; } // no drag, no hover
 	inline void setDragPoint(int i) { dragPoint = i; hoverPoint = i; } // no drag, no hover
