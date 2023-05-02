@@ -25,19 +25,22 @@ bool Curve::updateHoverPoint(const MouseEvent ev, const Point* points, int nPoin
 
 }
 
-inline void Curve::onLeftBtnDrag(const MouseEvent& ev) {
+void Curve::onLeftBtnDrag(const MouseEvent& ev) {
 	assert(dragPoint != -1);
 	printf("[%s id %d] [dragging] dragPoint: %d\n", typeAsString(), id, dragPoint);
+	setDragPoint(dragPoint);
+	pts[dragPoint] = ev.pos;
 }
 
-inline void Curve::drawCurve(HDC hdc) const { // https://www.youtube.com/watch?v=pnYccz1Ha34
+void Curve::drawCurve(HDC hdc) const { // https://www.youtube.com/watch?v=pnYccz1Ha34
 	assert(isCreated());
 	
 	Point prevPoint = pts[0];
+	int n = 100;
 
-	for (int v = 1; v <= 100; v += 1) {
+	for (int v = 1; v <= n; v += 1) {
 		
-		float t = static_cast<float>(v) / 100.0f;
+		float t = static_cast<float>(v) / static_cast<float>(n);
 
 		Point l0 = Line::lerp(pts[0], pts[1], t);
 		Point l1 = Line::lerp(pts[1], pts[2], t);
@@ -76,7 +79,7 @@ void Curve::draw(HDC hdc) const {
 
 
 
-bool Curve::onMouseEvent(const MouseEvent& ev) {
+bool Curve::onMouseEvent(const MouseEvent& ev) { // break it into beforeCreationComplete, afterCreationComplete
 	if (ev.isLButton()) {
 		if (ev.isUp()) {
 			if (isCreated()) {
@@ -135,5 +138,12 @@ bool Curve::onMouseEvent(const MouseEvent& ev) {
 	}
 
 
+	return false;
+}
+
+bool Curve::onMouseEvent_beforeCreationCompleted(const MouseEvent& ev)
+{
+	assert(!isCreated());
+	// move all mouse event before creation here.
 	return false;
 }
