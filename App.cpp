@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Line.h"
 #include "Rect.h"
+#include "Curve.h"
 
 App* App::_instance = nullptr;
 
@@ -78,8 +79,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 
 		if (ev.isDown()) {
 			if (ev.isLButton()) {
-				
-				auto p = std::make_unique<Line>(); //create current selected Object
+				auto p = std::make_unique<Curve>(); //create current selected Object
 				p->onCreate(ev); 
 				tmpObj = std::move(p);
 				return;

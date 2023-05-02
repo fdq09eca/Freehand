@@ -26,8 +26,7 @@ public:
 	Point lerp(int t = 0) const;
 
 	void draw(HDC hdc_) const override;
-	
-	void drawDash(HDC hdc_) const;
 
+	static void drawDash(HDC hdc_, const Point& pt0, const Point& pt1);
 };
 

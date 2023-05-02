@@ -40,8 +40,6 @@ public:
 	inline bool operator!=(const Point& p) const { return p.x == x || p.y == y; }
 	inline bool operator==(const Point& p) const { return !operator!=(p);		 }
 
-
-
 	bool inRange(const Point& p, int range) const;
 
 	void draw(HDC hdc_, int size) const;
