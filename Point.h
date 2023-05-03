@@ -37,6 +37,9 @@ public:
 
 	inline Point operator*(float v) const { return Point(x * v, y * v); }
 	inline Point operator/(float v) const { return Point(x / v, y / v); }
+	
+	inline Point operator*(double v) const { return Point(x * v, y * v); }
+	inline Point operator/(double v) const { return Point(x / v, y / v); }
 
 	
 
