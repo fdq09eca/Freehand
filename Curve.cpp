@@ -92,8 +92,6 @@ bool Curve::onMouseEvent(const MouseEvent& ev) { // break it into beforeCreation
 				return true;
 			}
 			else {
-				printf("[%s id %d] [LBtnDown] CreatePoint Current [%d] Next [%d]\n", typeAsString(), id, createPoint, createPoint + 1);
-				printf("[%s id %d] [LBtnDown] CreatePoint Current [%d] pos(%d, %d)\n", typeAsString(), id, createPoint, pts[createPoint].x, pts[createPoint].y);
 				createPoint++;
 				
 				if (isCreated()) {
@@ -119,7 +117,7 @@ bool Curve::onMouseEvent(const MouseEvent& ev) { // break it into beforeCreation
 			}
 			else {
 				
-				return true;
+				return false;
 			}
 		}
 	}
