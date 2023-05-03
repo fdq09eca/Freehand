@@ -6,7 +6,6 @@ void Curve::onCreate(const MouseEvent& ev) {
 	App::Instance()->setCaptureObject(this);
 	createPoint = 0;
 	hoverPoint = createPoint;
-
 	pts[createPoint] = ev.pos;
 	return;
 }
