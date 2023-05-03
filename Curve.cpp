@@ -82,7 +82,7 @@ void Curve::draw(HDC hdc) const {
 
 
 
-bool Curve::onMouseEvent(const MouseEvent& ev) { // break it into beforeCreationComplete, afterCreationComplete
+bool Curve::onMouseEvent(const MouseEvent& ev) {
 	if (ev.isLButton()) {
 		if (ev.isUp()) {
 			if (isCreated()) {
