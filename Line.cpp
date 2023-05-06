@@ -66,6 +66,8 @@ void Line::drawLine(HDC hdc_, const Point& pt0, const Point& pt1, HPEN hPen) {
 void Line::save(std::ofstream& f) {
 	writeString(f, typeAsString());
 	
+	f.put(':');
+	
 	for (auto& p : pt) {
 		p.save(f);
 	}
@@ -75,22 +77,19 @@ void Line::save(std::ofstream& f) {
 	f.put('\n');
 }
 
-void Line::load(std::ifstream& f, Line& line)
+void Line::load(std::ifstream& f)
 {
-	char c;
-	const int n = strlen(line.typeAsString());
-	
-	for (int i = 0; i < n; i++) {
-		f.get(c); //skip typeAsString
-		printf("%c", c);
-	}
-	
-	for (auto& p : line.pt) {
-		Point::load(f, p);
+	auto p = std::make_unique<Line>();
+	Line& line = *p;
+
+	for (auto& c : line.pt) {
+		Point::load(f, c);
 	}
 
 	readInt(f, line.hoverPoint);
 	readInt(f, line.dragPoint);
+
+	App::Instance()->objList.emplace_back(std::move(p));
 
 	printf("[Line] p0(% d, % d), p1(% d, % d), h:% d, d : % d\n",
 		line.pt[0].x, line.pt[0].y,

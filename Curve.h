@@ -28,6 +28,10 @@ public:
 	void drawCurve(HDC hdc) const;
 	
 	virtual bool onMouseEvent(const MouseEvent& ev);
+
+	void save(std::ofstream& f);
+
+	static void load(std::ifstream& f);
 	
 
 	

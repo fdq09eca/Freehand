@@ -153,4 +153,32 @@ bool Curve::onMouseEvent(const MouseEvent& ev) {
 	return false;
 }
 
+void Curve::save(std::ofstream& f) {
+	assert(_type == Type::Curve);
+	writeString(f, typeAsString());
+	
+	for (auto& pt : pts) {
+		pt.save(f); 
+	}
+
+	writeInt(f, hoverPoint);
+	writeInt(f, dragPoint);
+}
+
+void Curve::load(std::ifstream& f)
+{
+	auto p = std::make_unique<Curve>();
+	Curve& curve = *p;
+
+	for (auto& pt : curve.pts) {
+		pt.load(f, pt);
+	}
+
+
+	readInt(f, curve.hoverPoint);
+	readInt(f, curve.dragPoint);
+	App::Instance()->objList.emplace_back(std::move(p));
+	
+}
+
 

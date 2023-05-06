@@ -32,7 +32,7 @@ public:
 
 	void save(std::ofstream& f);
 
-	static void load(std::ifstream& f, Line& line);
+	static void load(std::ifstream& f);
 	
 };
 

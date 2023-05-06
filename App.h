@@ -58,6 +58,7 @@ public:
 	MouseButton mouseButtonState() const { return _mouseButtonState; }
 
 	void save();
+	void load();
 
 };
 

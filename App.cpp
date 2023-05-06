@@ -134,7 +134,7 @@ void App::clearCaptureObject() {
 }
 
 void App::save() {
-	{
+	
 		if (of.is_open()) {
 			of.close();
 		}
@@ -143,12 +143,32 @@ void App::save() {
 			obj->save(of);
 		}
 		of.close();
-		
-		std::ifstream ifs;
-		ifs.open("saveApp.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
-		Line line;
-		Line::load(ifs, line);
-		ifs.close();
+	
+}
 
+void App::load() {
+	using Type = AppObjectType;
+	using Obj = AppObject;
+	objList.clear();
+	std::ifstream ifs;
+	ifs.open("saveApp.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
+	char c;
+	int i = 0;
+	std::string objType;
+	
+	while (ifs.get(c)) {
+		if (c == '\n' || c == ' ') continue;
+	
+		objType += c;
+		
+		if (c == ':') {
+			if (objType == Obj::typeAsString(Type::Line)) {  Line::load(ifs); } 
+			if (objType == Obj::typeAsString(Type::Rect)) { Rect::load(ifs); }			
+			if (objType == Obj::typeAsString(Type::Curve)) { Curve::load(ifs); }
+			objType.clear();
+			continue;
+		}
 	}
+	
+	ifs.close();
 }

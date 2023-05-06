@@ -22,10 +22,10 @@ public:
 	Corner dragPoint = Corner::NONE;
 	Corner hoverPoint = Corner::NONE;
 
-	inline Point& leftTop()		{ return corners[static_cast<int>(Corner::LEFT_TOP)]; }
-	inline Point& leftBottom()	{ return corners[static_cast<int>(Corner::LEFT_BOTTOM)]; }
-	inline Point& rightTop()	{ return corners[static_cast<int>(Corner::RIGHT_TOP)]; }
-	inline Point& rightBottom()	{ return corners[static_cast<int>(Corner::RIGHT_BOTTOM)]; }
+	inline Point& leftTop() { return corners[static_cast<int>(Corner::LEFT_TOP)]; }
+	inline Point& leftBottom() { return corners[static_cast<int>(Corner::LEFT_BOTTOM)]; }
+	inline Point& rightTop() { return corners[static_cast<int>(Corner::RIGHT_TOP)]; }
+	inline Point& rightBottom() { return corners[static_cast<int>(Corner::RIGHT_BOTTOM)]; }
 
 	inline const Point& leftTop()		const { return corners[static_cast<int>(Corner::LEFT_TOP)]; }
 	inline const Point& leftBottom()	const { return corners[static_cast<int>(Corner::LEFT_BOTTOM)]; }
@@ -44,5 +44,11 @@ public:
 	virtual void draw(HDC hdc) const override;
 
 	bool updateHoverPoint(const MouseEvent& ev);
+
+	void save(std::ofstream& f);
+
+	static void load(std::ifstream& f);
+
+
 
 };

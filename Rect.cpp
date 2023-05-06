@@ -160,3 +160,35 @@ bool Rect::updateHoverPoint(const MouseEvent& ev) {
 	}
 	return false;
 }
+
+void Rect::save(std::ofstream& f) {
+	writeString(f, typeAsString());
+	for (auto& c : corners) {
+		c.save(f);
+	}
+	f.put('\n');
+}
+
+void Rect::load(std::ifstream& f) {
+	auto p = std::make_unique<Rect>();
+	Rect& rect = *p;
+	
+	for (auto& c : rect.corners) {
+		Point::load(f, c);
+	}
+
+	int h = static_cast<int>(rect.hoverPoint);
+	int d = static_cast<int>(rect.dragPoint);
+
+	readInt(f, h);
+	readInt(f, d);
+
+	App::Instance()->objList.emplace_back(std::move(p));
+
+	printf("[Rect]: (%d, %d), (%d, %d), (%d, %d), (%d, %d); h: %d, d: %d",
+		rect.corners[0].x, rect.corners[0].y,
+		rect.corners[1].x, rect.corners[1].y,
+		rect.corners[2].x, rect.corners[2].y,
+		rect.corners[3].x, rect.corners[3].y,
+		rect.hoverPoint, rect.dragPoint);
+}
