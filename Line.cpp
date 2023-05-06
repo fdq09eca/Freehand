@@ -63,6 +63,39 @@ void Line::drawLine(HDC hdc_, const Point& pt0, const Point& pt1, HPEN hPen) {
 	SelectObject(hdc_, oldPen);
 }
 
+void Line::save(std::ofstream& f) {
+	writeString(f, typeAsString());
+	
+	for (auto& p : pt) {
+		p.save(f);
+	}
+
+	writeInt(f, hoverPoint);
+	writeInt(f, dragPoint);
+	f.put('\n');
+}
+
+void Line::load(std::ifstream& f, Line& line)
+{
+	char c;
+	const int n = strlen(line.typeAsString());
+	
+	for (int i = 0; i < n; i++) {
+		f.get(c); //skip typeAsString
+		printf("%c", c);
+	}
+	
+	for (auto& p : line.pt) {
+		Point::load(f, p);
+	}
+
+	readInt(f, line.hoverPoint);
+	readInt(f, line.dragPoint);
+	return;
+}
+
+
+
 
 
 bool Line::updateHoverPoint(const MouseEvent ev, const Point* points, int nPoints) {

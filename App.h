@@ -19,7 +19,9 @@ public:
 	HPEN dashRedPen;
 	HBRUSH solidRedBrush;
 	HPEN solidBlackPen;
-	
+
+
+	std::ofstream of;
 	std::vector<std::unique_ptr<AppObject>> objList;
 	std::unique_ptr<AppObject> tmpObj;
 	AppObject* captureObj = nullptr;
@@ -54,6 +56,8 @@ public:
 	void clearCaptureObject();
 
 	MouseButton mouseButtonState() const { return _mouseButtonState; }
+
+	void save();
 
 };
 

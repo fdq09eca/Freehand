@@ -29,6 +29,10 @@ public:
 	void draw(HDC hdc_) const override;
 
 	static void drawLine(HDC hdc_, const Point& pt0, const Point& pt1, HPEN hpen);
+
+	void save(std::ofstream& f);
+
+	static void load(std::ifstream& f, Line& line);
 	
 };
 

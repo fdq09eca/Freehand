@@ -8,6 +8,8 @@
 #include <string>
 #define MAX_LOADSTRING 100
 
+
+	
 // Global Variables:
 
 HINSTANCE hInst;                                // current instance
@@ -159,6 +161,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 		case VK_F1: { cuurentAppObjType = AppObjectType::Line; } break;
 		case VK_F2: { cuurentAppObjType = AppObjectType::Point; } break;
+		case VK_F3: { 
+			App::Instance()->save();
+		} break;
+
 		default: { } break;
 		}
 	} break;

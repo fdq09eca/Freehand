@@ -6,7 +6,8 @@
 #include <vector>
 #include <cassert>
 #include <cstdint>
-
+#include <iostream>
+#include <fstream>
 class NonCopyable {
 
 private:
@@ -63,6 +64,8 @@ enum class MouseEventType {
 	Down,
 	Move,
 };
+
+
 
 class MouseEvent {
 public:
@@ -132,3 +135,29 @@ public:
 		BitBlt(hdc, x, y, _w, _h, _dc, 0, 0, SRCCOPY);
 	}
 };
+
+inline void writeInt(std::ofstream& f, int v) { f.write((char*)&v, sizeof(v));	}
+inline void writeString(std::ofstream& f, const char* str) { f.write(str, strlen(str)); }
+
+inline void readString(std::ifstream& f, char* buff, int nChar) {
+	assert(!f.eof());
+	f.read(buff, nChar);
+}
+
+inline void readInt(std::ifstream& f, int& v) { 
+	assert(!f.eof());
+	f.read((char*)&v, sizeof(v)); 
+	
+}
+
+
+
+//inline const char* readLine(std::fstream& f, std::string& s) { 
+//	s.clear();
+//	char c;
+//	while (!of.eof()) {
+//		of.get(c);
+//		if (c == '\n') return s.data();
+//		s += c;
+//	}
+//}

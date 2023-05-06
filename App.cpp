@@ -132,3 +132,23 @@ void App::clearCaptureObject() {
 	printf("[clear] captureObj [%s id: %d]\n", captureObj->typeAsString(), captureObj->id);
 	captureObj = nullptr;
 }
+
+void App::save() {
+	{
+		if (of.is_open()) {
+			of.close();
+		}
+		of.open("saveApp.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
+		for (auto& obj : objList) {
+			obj->save(of);
+		}
+		of.close();
+		
+		std::ifstream ifs;
+		ifs.open("saveApp.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
+		Line line;
+		Line::load(ifs, line);
+		ifs.close();
+
+	}
+}

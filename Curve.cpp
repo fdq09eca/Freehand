@@ -29,6 +29,16 @@ void Curve::onLeftBtnDrag(const MouseEvent& ev) {
 	printf("[%s id %d] [dragging] dragPoint: %d\n", typeAsString(), id, dragPoint);
 	setDragPoint(dragPoint);
 	pts[dragPoint] = ev.pos;
+
+	//snapping
+	for (int i = 0; i < nPoints; i++) {
+		if (i == dragPoint) 
+			continue;
+		
+		if (pts[i].sanp(pts[dragPoint])) {
+			printf("SNAP!");
+		}
+	}
 }
 
 void Curve::drawCurve(HDC hdc) const { // https://www.youtube.com/watch?v=pnYccz1Ha34
@@ -37,7 +47,7 @@ void Curve::drawCurve(HDC hdc) const { // https://www.youtube.com/watch?v=pnYccz
 	Point prevPoint = pts[0];
 	int n = 100;
 
-	for (int v = 1; v <= n; v += 1) {
+	for (int v = 1; v <= n; v ++) {
 		
 		float t = static_cast<float>(v) / static_cast<float>(n);
 
@@ -110,6 +120,7 @@ bool Curve::onMouseEvent(const MouseEvent& ev) {
 				if (hoverPoint != -1) {
 					App::Instance()->setCaptureObject(this);
 					setDragPoint(hoverPoint);
+					
 					return true;
 				}
 

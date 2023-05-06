@@ -46,10 +46,23 @@ public:
 	inline bool operator!=(const Point& p) const { return p.x == x || p.y == y; }
 	inline bool operator==(const Point& p) const { return !operator!=(p);		 }
 
-	bool inRange(const Point& p, int range) const;
-
+	bool inRange(const Point& p, int range = 3) const;
+	
+	bool sanp(Point& p) {
+		if (!p.inRange(*this, 12))
+			return false;
+		
+		p = *this;
+		return true;
+	}
+	
 	void draw(HDC hdc_, int size, bool isHover = false) const;
 	void draw(HDC hdc_, int size, HPEN hpen, HBRUSH) const;
 
+
+	void save(std::ofstream& f);
+	static void load(std::ifstream& f, Point& p);
+	
+	
 };
 

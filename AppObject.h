@@ -29,24 +29,15 @@ public:
 	}
 	
 	virtual ~AppObject() { }
-	virtual void draw(HDC hdc_) const { };
+	virtual void draw(HDC hdc_) const { }
 	virtual bool onMouseEvent(const MouseEvent& e) { return false; }
+
+	virtual void save(std::ofstream&) { }
+	virtual void load(std::ifstream&) { }
 	Type type() const { return _type; }
 	
-	const char* typeAsString() const {
-		switch (_type)
-		{
-			case Type::NA:			{ return "NA"; }
-			case Type::AppObject:	{ return "AppObject"; }
-			case Type::Point:		{ return "Point"; }
-			case Type::Line:		{ return "Line"; }
-			case Type::Rect:		{ return "Rect"; }
-			case Type::Curve:		{ return "Curve"; }
-			default: break;
-		}
-		assert(false);
-		return "[ERR] Unknown Type";
-	}
+	const char* typeAsString() const;
+	static const char* typeAsString(Type t);
 
 };
 

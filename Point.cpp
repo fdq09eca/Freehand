@@ -31,3 +31,15 @@ void Point::draw(HDC hdc_, int size, HPEN hpen, HBRUSH hBrush) const {
 	SelectPen(hdc_, oldPen);
 	SelectPen(hdc_, oldBrush);
 }
+
+void Point::save(std::ofstream& f)  { 
+	writeInt(f, x); 
+	writeInt(f, y); 
+}
+
+void Point::load(std::ifstream& f, Point& p)
+{
+	readInt(f, p.x);
+	readInt(f, p.y);
+}
+
