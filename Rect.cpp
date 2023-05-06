@@ -163,9 +163,14 @@ bool Rect::updateHoverPoint(const MouseEvent& ev) {
 
 void Rect::save(std::ofstream& f) {
 	writeString(f, typeAsString());
+	f.put(':');
+	
 	for (auto& c : corners) {
 		c.save(f);
 	}
+
+	writeInt(f, static_cast<int>(hoverPoint));
+	writeInt(f, static_cast<int>(dragPoint));
 	f.put('\n');
 }
 
@@ -177,11 +182,16 @@ void Rect::load(std::ifstream& f) {
 		Point::load(f, c);
 	}
 
-	int h = static_cast<int>(rect.hoverPoint);
-	int d = static_cast<int>(rect.dragPoint);
+	int h;
+	int d;
 
 	readInt(f, h);
 	readInt(f, d);
+	
+	rect.hoverPoint = static_cast<Corner>(h);
+	rect.dragPoint = static_cast<Corner>(d);
+	
+
 
 	App::Instance()->objList.emplace_back(std::move(p));
 

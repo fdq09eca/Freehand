@@ -25,6 +25,8 @@ void App::init() {
 	auto r = std::make_unique<Rect>();
 	r->corners[0] = POINT{ 500, 500 };
 	r->corners[3] = POINT{ 600, 600 };
+	r->updateCorner(RectCorner::RIGHT_TOP);
+	r->updateCorner(RectCorner::LEFT_BOTTOM);
 	objList.emplace_back(std::move(r));
 }
 
@@ -159,14 +161,18 @@ void App::load() {
 	while (ifs.get(c)) {
 		if (c == '\n' || c == ' ') continue;
 	
-		objType += c;
 		
 		if (c == ':') {
-			if (objType == Obj::typeAsString(Type::Line)) {  Line::load(ifs); } 
+			if (objType == Obj::typeAsString(Type::Line)) { 
+				Line::load(ifs); 
+			} 
 			if (objType == Obj::typeAsString(Type::Rect)) { Rect::load(ifs); }			
 			if (objType == Obj::typeAsString(Type::Curve)) { Curve::load(ifs); }
 			objType.clear();
 			continue;
+		}
+		else {
+			objType += c;
 		}
 	}
 	

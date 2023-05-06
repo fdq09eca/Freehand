@@ -2,11 +2,7 @@
 #include "AppObject.h"
 #include "Point.h"
 
-
-class Rect : public AppObject // i want to call it Rectangle too..
-{
-private:
-	enum class Corner {
+enum class RectCorner {
 		NONE = -1,
 		LEFT_TOP = 0,
 		LEFT_BOTTOM = 1,
@@ -14,8 +10,12 @@ private:
 		RIGHT_BOTTOM = 3
 	};
 
+class Rect : public AppObject // i want to call it Rectangle too..
+{
+
 
 public:
+	using Corner = RectCorner;
 	Rect() { _type = Type::Rect; }
 
 	Point corners[4];
