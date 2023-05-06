@@ -195,7 +195,7 @@ void Rect::load(std::ifstream& f) {
 
 	App::Instance()->objList.emplace_back(std::move(p));
 
-	printf("[Rect]: (%d, %d), (%d, %d), (%d, %d), (%d, %d); h: %d, d: %d",
+	printf("[Rect]: (%d, %d), (%d, %d), (%d, %d), (%d, %d); h: %d, d: %d\n",
 		rect.corners[0].x, rect.corners[0].y,
 		rect.corners[1].x, rect.corners[1].y,
 		rect.corners[2].x, rect.corners[2].y,

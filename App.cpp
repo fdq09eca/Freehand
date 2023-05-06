@@ -136,16 +136,12 @@ void App::clearCaptureObject() {
 }
 
 void App::save() {
-	
-		if (of.is_open()) {
-			of.close();
-		}
+		std::ofstream of;
 		of.open("saveApp.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
 		for (auto& obj : objList) {
 			obj->save(of);
 		}
 		of.close();
-	
 }
 
 void App::load() {
@@ -163,11 +159,9 @@ void App::load() {
 	
 		
 		if (c == ':') {
-			if (objType == Obj::typeAsString(Type::Line)) { 
-				Line::load(ifs); 
-			} 
-			if (objType == Obj::typeAsString(Type::Rect)) { Rect::load(ifs); }			
-			if (objType == Obj::typeAsString(Type::Curve)) { Curve::load(ifs); }
+			if (objType == Obj::typeAsString(Type::Line))	{ Line::load(ifs); }
+			if (objType == Obj::typeAsString(Type::Rect))	{ Rect::load(ifs); }
+			if (objType == Obj::typeAsString(Type::Curve))	{ Curve::load(ifs); }
 			objType.clear();
 			continue;
 		}

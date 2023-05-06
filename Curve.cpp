@@ -156,6 +156,8 @@ bool Curve::onMouseEvent(const MouseEvent& ev) {
 void Curve::save(std::ofstream& f) {
 	assert(_type == Type::Curve);
 	writeString(f, typeAsString());
+
+	f.put(':');
 	
 	for (auto& pt : pts) {
 		pt.save(f); 
@@ -163,6 +165,8 @@ void Curve::save(std::ofstream& f) {
 
 	writeInt(f, hoverPoint);
 	writeInt(f, dragPoint);
+	writeInt(f, createPoint);
+	f.put('\n');
 }
 
 void Curve::load(std::ifstream& f)
@@ -177,7 +181,15 @@ void Curve::load(std::ifstream& f)
 
 	readInt(f, curve.hoverPoint);
 	readInt(f, curve.dragPoint);
+	readInt(f, curve.createPoint);
 	App::Instance()->objList.emplace_back(std::move(p));
+
+	printf("[Curve]: (%d, %d), (%d, %d), (%d, %d), (%d, %d); h: %d, d: %d, c: %d\n",
+		curve.pts[0].x, curve.pts[0].y,
+		curve.pts[1].x, curve.pts[1].y,
+		curve.pts[2].x, curve.pts[2].y,
+		curve.pts[3].x, curve.pts[3].y,
+		curve.hoverPoint, curve.dragPoint, curve.createPoint);
 	
 }
 

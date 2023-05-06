@@ -21,7 +21,7 @@ public:
 	HPEN solidBlackPen;
 
 
-	std::ofstream of;
+	
 	std::vector<std::unique_ptr<AppObject>> objList;
 	std::unique_ptr<AppObject> tmpObj;
 	AppObject* captureObj = nullptr;
