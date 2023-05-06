@@ -91,7 +91,12 @@ void Line::load(std::ifstream& f, Line& line)
 
 	readInt(f, line.hoverPoint);
 	readInt(f, line.dragPoint);
-	return;
+
+	printf("[Line] p0(% d, % d), p1(% d, % d), h:% d, d : % d\n",
+		line.pt[0].x, line.pt[0].y,
+		line.pt[1].x, line.pt[1].y,
+		line.hoverPoint, line.dragPoint
+	);
 }
 
 
