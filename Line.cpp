@@ -66,7 +66,7 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 
 bool Line::updateHoverLine(const MouseEvent& ev, int distance = 10) {
 	ishoverLine = false;
-	// bug start here
+
 	if (hoverPoint != -1) {
 		return false; 
 	}
@@ -75,13 +75,6 @@ bool Line::updateHoverLine(const MouseEvent& ev, int distance = 10) {
 		return false; 
 	}
 
-
-	/*RECT r{ pt[0].x , pt[0].y, pt[1].x, pt[1].y };
-	if (!PtInRect(&r, ev.pos)) {
-		return false; 
-	}*/
-	// bug end here
-	
 	Vector2D v = pt[1] - pt[0];
 	Vector2D m = Point(ev.pos) - pt[0];
 	Vector2D u = v.unitVector();
