@@ -3,9 +3,7 @@
 #include "AppObject.h"
 
 class Line : public AppObject
-{
-private:
-	Point _lastMousePos;
+{	
 public:
 	Point pt[2];
 	int dragPoint = -1;
@@ -25,10 +23,7 @@ public:
 	inline void clearHoverPoint()	{ clearDragPoint(); }
 	inline void clearDragPoint()	{ dragPoint = -1; hoverPoint = -1; } // no drag, no hover
 	inline void setDragPoint(int i) { dragPoint =  i; hoverPoint =  i; } // no drag, no hover
-	inline void setDragLine(bool b, const MouseEvent& ev) { 
-		isDragLine	=  b; 
-		ishoverLine =  b; 
-	} // no drag, no hover
+	inline void setDragLine(bool b) { isDragLine =  b; ishoverLine =  b; } // no drag, no hover
 
 	bool updateHoverPoint(const MouseEvent ev, const Point* points, int nPoints);
 	bool updateHoverLine(const MouseEvent& ev, int distance);

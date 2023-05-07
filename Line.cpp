@@ -2,7 +2,8 @@
 #include "App.h"
 
 bool Line::onMouseEvent(const MouseEvent& ev) {
-
+	static Point _lastMousePos;
+	
 	if (ev.isUp() && ev.isLButton()) {
 		if (dragPoint >= 0 && dragPoint < 2) {
 			setDragPoint(-1);
@@ -12,7 +13,8 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 
 		if (isDragLine) {
 			App::Instance()->clearCaptureObject();
-			setDragLine(false, ev);
+			setDragLine(false);
+			return true;
 		}
 	}
 
@@ -24,7 +26,7 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 		}
 		if (updateHoverLine(ev, 10)) {
 			App::Instance()->setCaptureObject(this);
-			setDragLine(true, ev);
+			setDragLine(true);
 			_lastMousePos = ev.pos;
 			return true;
 
@@ -39,7 +41,7 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 		}
 
 		if (isDragLine) {
-			Point v= Point(ev.pos) - _lastMousePos;
+			Point v = Point(ev.pos) - _lastMousePos;
 			for (auto& p : pt) {
 				p += v;
 			}
