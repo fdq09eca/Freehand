@@ -50,9 +50,10 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 		}
 
 		bool isUpdated = false;
+
 		isUpdated = updateHoverLine(ev, 10);
 		if (isUpdated) return true;
-
+		
 		isUpdated = updateHoverPoint(ev, pt, 2);
 		if (isUpdated) return true;
 
@@ -65,20 +66,21 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 
 bool Line::updateHoverLine(const MouseEvent& ev, int distance = 10) {
 	ishoverLine = false;
-	// bug here
+	// bug start here
 	if (hoverPoint != -1) {
 		return false; 
 	}
 	
-	if (pt[0] == ev.pos || pt[1] == ev.pos) { 
+	if (pt[0].inRange(ev.pos, 3) || pt[1].inRange(ev.pos, 3)) {
 		return false; 
 	}
 
 
-	RECT r{ pt[0].x , pt[0].y, pt[1].x, pt[1].y };
+	/*RECT r{ pt[0].x , pt[0].y, pt[1].x, pt[1].y };
 	if (!PtInRect(&r, ev.pos)) {
 		return false; 
-	}
+	}*/
+	// bug end here
 	
 	Vector2D v = pt[1] - pt[0];
 	Vector2D m = Point(ev.pos) - pt[0];
@@ -86,7 +88,7 @@ bool Line::updateHoverLine(const MouseEvent& ev, int distance = 10) {
 	Vector2D projVector = pt[0].asVector2D() + m.project(v);
 	double d = projVector.distance(Point(ev.pos));
 	
-	if (d > distance) { 
+	if (d < 0 || d > distance) { 
 		return false; 
 	}
 	
