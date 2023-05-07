@@ -65,7 +65,7 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 
 bool Line::updateHoverLine(const MouseEvent& ev, int distance = 10) {
 	ishoverLine = false;
-
+	// bug here
 	if (hoverPoint != -1) {
 		return false; 
 	}
