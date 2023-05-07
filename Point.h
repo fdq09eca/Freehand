@@ -12,8 +12,10 @@ public:
 	Point(const POINT& p);
 
 	inline POINT asPOINT() const { return POINT{ x, y }; }
+	inline Vector2D asVector2D() const { return Vector2D(x, y); }
 	
 	inline operator POINT () const { return asPOINT(); }
+	inline operator Vector2D () const { return asVector2D(); }
 	// operator POINT* () const { return &asPOINT(); } // does it work?
 	
 	
@@ -43,10 +45,13 @@ public:
 
 	
 
-	inline bool operator!=(const Point& p) const { return p.x == x || p.y == y; }
+	inline bool operator!=(const Point& p) const { return p.x != x || p.y != y; }
 	inline bool operator==(const Point& p) const { return !operator!=(p);		 }
+	
 
 	bool inRange(const Point& p, int range = 3) const;
+	
+
 	
 	bool sanp(Point& p) {
 		if (!p.inRange(*this, 12))
@@ -62,7 +67,7 @@ public:
 
 	void save(std::ofstream& f);
 	static void load(std::ifstream& f, Point& p);
-	
-	
 };
+
+
 

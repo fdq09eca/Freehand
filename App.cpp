@@ -10,9 +10,12 @@ void App::init() {
 	_instance = this;
 
 	// create pen and brush..
-	dashRedPen = ::CreatePen(PS_DOT, 1, RGB(255, 0, 0)); // red dash pen
 	solidBlackPen = ::CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // black solid pen
+	
+	dashRedPen = ::CreatePen(PS_DOT, 1, RGB(255, 0, 0)); // red dash pen
+	solidRedPen = ::CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // red solid pen
 	solidRedBrush = ::CreateSolidBrush(RGB(255, 0, 0)); // red solid brush
+	
 	
 	
 	// for testing purpose...

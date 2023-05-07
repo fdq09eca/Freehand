@@ -150,14 +150,69 @@ inline void readInt(std::ifstream& f, int& v) {
 	
 }
 
+class Vector2D {
+
+public:
+	double x = 0;
+	double y = 0;
+
+	Vector2D(double _x = 0, double _y = 0) : x(_x), y(_y) { }
+	Vector2D(const Vector2D& v) { //copy
+		x = v.x;
+		y = v.y;
+	}
+	
+	~Vector2D() { x = 0; y = 0; }
+
+	double distance(const Vector2D& p) const {
+		return (p - *this).length();
+	}
+
+	double length() const {
+		return sqrt(x * x + y * y);
+	}
+
+	Vector2D unitVector() const {
+		return *this / length();
+	}
+
+	double dotProduct(const Vector2D& p) const {
+		return x * p.x + y * p.y;
+	}
+
+	Vector2D project(const Vector2D& v) const {
+		Vector2D u = v.unitVector();
+		double projectLen = dotProduct(u);
+		return u * projectLen;
+	}
+
+	inline void operator=(const Vector2D& p) { *this = Vector2D(p); }
+	
+
+	inline Vector2D operator+(const Vector2D& v) const { return Vector2D(x + v.x, y + v.y); }
+	inline Vector2D operator-(const Vector2D& v) const { return Vector2D(x - v.x, y - v.y); }
+	inline Vector2D operator*(const Vector2D& v) const { return Vector2D(x * v.x, y * v.y); }
+	inline Vector2D operator/(const Vector2D& v) const { return Vector2D(x / v.x, y / v.y); }
+
+	inline void operator+=(const Vector2D& v) { x += v.x; y += v.y; }
+	inline void operator-=(const Vector2D& v) { x -= v.x; y -= v.y; }
+	inline void operator*=(const Vector2D& v) { x *= v.x; y *= v.y; }
+	inline void operator/=(const Vector2D& v) { x /= v.x; y /= v.y; }
+
+	inline Vector2D operator*(int val) const { return Vector2D(x * val, y * val); }
+	inline Vector2D operator/(int val) const { return Vector2D(x / val, y / val); }
+
+	inline void operator*=(int val) { x *= val; y *= val; }
+	inline void operator/=(int val) { x /= val; y /= val; }
+
+	inline Vector2D operator*(float val) const { return Vector2D(x * val, y * val); }
+	inline Vector2D operator/(float val) const { return Vector2D(x / val, y / val); }
+
+	inline Vector2D operator*(double val) const { return Vector2D(x * val, y * val); }
+	inline Vector2D operator/(double val) const { return Vector2D(x / val, y / val); }
+
+	inline bool operator!=(const Vector2D& v) const { return v.x != x || v.y != y; }
+	inline bool operator==(const Vector2D& v) const { return !operator!=(v); }
 
 
-//inline const char* readLine(std::fstream& f, std::string& s) { 
-//	s.clear();
-//	char c;
-//	while (!of.eof()) {
-//		of.get(c);
-//		if (c == '\n') return s.data();
-//		s += c;
-//	}
-//}
+};

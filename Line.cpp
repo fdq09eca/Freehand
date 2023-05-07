@@ -5,10 +5,14 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 
 	if (ev.isUp() && ev.isLButton()) {
 		if (dragPoint >= 0 && dragPoint < 2) {
-			pt[dragPoint] = ev.pos;
 			setDragPoint(-1);
 			App::Instance()->clearCaptureObject();
 			return true;
+		}
+
+		if (isDragLine) {
+			App::Instance()->clearCaptureObject();
+			setDragLine(false, ev);
 		}
 	}
 
@@ -17,6 +21,13 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 			App::Instance()->setCaptureObject(this);
 			setDragPoint(hoverPoint);
 			return true;
+		}
+		if (updateHoverLine(ev, 10)) {
+			App::Instance()->setCaptureObject(this);
+			setDragLine(true, ev);
+			_lastMousePos = ev.pos;
+			return true;
+
 		}
 	}
 
@@ -27,10 +38,58 @@ bool Line::onMouseEvent(const MouseEvent& ev) {
 			return true;
 		}
 
-		bool isUpdated = updateHoverPoint(ev, pt, 2);
-		return isUpdated;
+		if (isDragLine) {
+			Point v= Point(ev.pos) - _lastMousePos;
+			for (auto& p : pt) {
+				p += v;
+			}
+			_lastMousePos = ev.pos;
+			return true;
+		}
+
+		bool isUpdated = false;
+		isUpdated = updateHoverLine(ev, 10);
+		if (isUpdated) return true;
+
+		isUpdated = updateHoverPoint(ev, pt, 2);
+		if (isUpdated) return true;
+
+
+		
+		return false;
 	}
 	return false;
+}
+
+bool Line::updateHoverLine(const MouseEvent& ev, int distance = 10) {
+	ishoverLine = false;
+
+	if (hoverPoint != -1) {
+		return false; 
+	}
+	
+	if (pt[0] == ev.pos || pt[1] == ev.pos) { 
+		return false; 
+	}
+
+
+	RECT r{ pt[0].x , pt[0].y, pt[1].x, pt[1].y };
+	if (!PtInRect(&r, ev.pos)) {
+		return false; 
+	}
+	
+	Vector2D v = pt[1] - pt[0];
+	Vector2D m = Point(ev.pos) - pt[0];
+	Vector2D u = v.unitVector();
+	Vector2D projVector = pt[0].asVector2D() + m.project(v);
+	double d = projVector.distance(Point(ev.pos));
+	
+	if (d > distance) { 
+		return false; 
+	}
+	
+	ishoverLine = true;
+	return true;
 }
 
 void Line::onCreate(const MouseEvent& ev) {
@@ -41,9 +100,16 @@ void Line::onCreate(const MouseEvent& ev) {
 }
 
 void Line::draw(HDC hdc_) const {
+
+	if (ishoverLine) {
+		Line::drawLine(hdc_, pt[0], pt[1], App::Instance()->solidRedPen);
+	}
+	else {
+		Line::drawLine(hdc_, pt[0], pt[1], GetStockPen(DC_PEN));
+	}
 	
-	MoveToEx(hdc_, pt[0].x, pt[0].y, nullptr);
-	LineTo(hdc_, pt[1].x, pt[1].y);
+	//MoveToEx(hdc_, pt[0].x, pt[0].y, nullptr);
+	//LineTo(hdc_, pt[1].x, pt[1].y);
 
 	
 	assert(hoverPoint < 2);

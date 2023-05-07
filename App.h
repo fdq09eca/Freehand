@@ -17,8 +17,9 @@ private:
 
 public:
 	HPEN dashRedPen;
-	HBRUSH solidRedBrush;
+	HPEN solidRedPen;
 	HPEN solidBlackPen;
+	HBRUSH solidRedBrush;
 
 
 	
