@@ -141,24 +141,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE: {
 		//init Menu
-		;
-		DestroyMenu(GetMenu(hWnd));
-		auto v = SetMenu(hWnd, nullptr);
-		DrawMenuBar(hWnd);
-		/*HMENU mainMenu = CreateMenu();
-		MENUITEMINFO s;
+		//DestroyMenu(GetMenu(hWnd));
+		//auto v = SetMenu(hWnd, nullptr);
+		HMENU mainMenu = CreateMenu();
 
-		const wchar_t* f = L"File";
+		/*const wchar_t* caption = L"File";
+
+		MENUITEMINFO info;
+		info.cbSize = sizeof(info);
+		info.fMask = MIIM_FTYPE | MIIM_STRING | MIIM_ID;
+		info.fType = MFT_STRING;
+		info.wID = 199;
+		
+
+		info.dwTypeData = const_cast<wchar_t*>(caption);
+		info.cch = static_cast<UINT>(wcslen(caption));
+
+		InsertMenuItem(mainMenu, 0, true, &info);*/
+		
+		MENUITEMINFO s;
+		const wchar_t* caption = L"File";
 		s.cbSize = sizeof(s);
-		s.fMask = MIIM_TYPE | MIIM_DATA | MIIM_SUBMENU;
+		s.fMask = MIIM_TYPE;
 		s.fType = MFT_STRING;
-		s.fState = MFS_ENABLED;
-		s.dwTypeData = (LPTSTR) f;
-		s.cch = 4;
+		s.dwTypeData = const_cast<wchar_t*>(caption);
+		s.cch = wcslen(caption);
 
 
 		InsertMenuItem(mainMenu, 0, true, &s);
-		SetMenu(_hWnd, mainMenu);*/
+		SetMenu(hWnd, mainMenu);
+		//DrawMenuBar(hWnd);
 
 	}break;
 	case WM_COMMAND:
