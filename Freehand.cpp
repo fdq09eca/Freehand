@@ -145,11 +145,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Parse the menu selections:
 		switch (wmId)
 		{
+		case ID_FILE_SAVE:
+			printf("onSave!\n");
+			//App::Instance()->save();
+			break;
 		case IDM_ABOUT:
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
 		case IDM_EXIT:
-			DestroyWindow(hWnd);
+			SendMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
