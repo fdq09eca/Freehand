@@ -4,6 +4,7 @@
 #include "windowsx.h"
 #include <string>
 #include <vector>
+#include <map>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
@@ -217,43 +218,3 @@ public:
 
 };
 
-class Menu {
-
-public:
-	HMENU hMenu = nullptr;
-
-	Menu() : hMenu(CreateMenu()) { };
-	
-	void addItem(const wchar_t* caption, int pos, int cmdId, Menu* subMenu = nullptr) {
-		MENUITEMINFO s;
-		s.cbSize = sizeof(s);
-		s.fMask = MIIM_TYPE | MIIM_SUBMENU | MIIM_ID;
-		s.wID = cmdId;
-		s.hSubMenu = subMenu? subMenu->hMenu : nullptr;
-		s.fType = MFT_STRING;
-		s.dwTypeData = const_cast<wchar_t*>(caption);
-		s.cch = wcslen(caption);
-		InsertMenuItem(hMenu, pos, true, &s);
-	};
-	void setItemState(int cmdId, int fState, bool checked) {
-		MENUITEMINFO s;
-		s.cbSize = sizeof(s);
-		s.fMask = MIIM_STATE;
-		if (checked) {
-			s.fState |= fState;
-		} else {
-			s.fState &= ~fState;
-		}
-		SetMenuItemInfo(hMenu, cmdId, false, &s);
-	};
-	
-	void removeItem(int val, bool byCmd = true) {
-		RemoveMenu(hMenu, val, byCmd ? MF_BYCOMMAND : MF_BYPOSITION);
-	};
-
-	static void update(HWND hWnd){ DrawMenuBar(hWnd); }	
-	~Menu() { 
-		if (hMenu) { DestroyMenu(hMenu); }
-	}
-
-};

@@ -117,6 +117,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	}
 	
 	App::Instance()->setHwnd(hWnd);
+	App::Instance()->initMenu();
+	
+
+	//DrawMenuBar(hWnd);
+	
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -139,65 +144,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-	case WM_CREATE: {
-		//init Menu
-		//DestroyMenu(GetMenu(hWnd));
-		//auto v = SetMenu(hWnd, nullptr);
-		/*HMENU mainMenu = CreateMenu();
-		HMENU fileTab_DropDownMenu = CreateMenu();*/
-
-		Menu mainMenu;
-		mainMenu.addItem(L"File", -1, 1990);
-		
-		/*const wchar_t* caption = L"File";
-
-		MENUITEMINFO info;
-		info.cbSize = sizeof(info);
-		info.fMask = MIIM_FTYPE | MIIM_STRING | MIIM_ID;
-		info.fType = MFT_STRING;
-		info.wID = 199;
-		
-
-		info.dwTypeData = const_cast<wchar_t*>(caption);
-		info.cch = static_cast<UINT>(wcslen(caption));
-
-		InsertMenuItem(mainMenu, 0, true, &info);*/
-		
-		/*MENUITEMINFO s;
-		const wchar_t* caption = L"File";
-		s.cbSize = sizeof(s);
-		s.fMask = MIIM_TYPE | MIIM_SUBMENU | MIIM_ID;
-		s.wID = 1309;
-		s.hSubMenu = fileTab_DropDownMenu;
-		s.fType = MFT_STRING;
-		s.dwTypeData = const_cast<wchar_t*>(caption);
-		s.cch = wcslen(caption);
-
-
-		InsertMenuItem(mainMenu, 0, true, &s);*/
-		SetMenu(hWnd, mainMenu.hMenu);
-		//DrawMenuBar(hWnd);
-
-	}break;
+	case WM_CREATE: { } break;
 	case WM_COMMAND:
 	{
 		int wmId = LOWORD(wParam);
-		// Parse the menu selections:
-		switch (wmId)
-		{
-		case ID_FILE_SAVE:
-			printf("onSave!\n");
-			//App::Instance()->save();
+		if (App::Instance()->menu._onWin32Command(hInst, hWnd, wmId)) {
 			break;
-		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-			break;
-		case IDM_EXIT:
-			SendMessage(hWnd, WM_CLOSE, 0, 0);
-			break;
-		default:
+		}
+		else {
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
+	
 	} break;
 
 	case WM_KEYDOWN: {
@@ -244,24 +201,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 // Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
 
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
-		}
-		break;
-	}
-	return (INT_PTR)FALSE;
-}
+
 
 int main() {
 	wWinMain(GetInstanceModule(nullptr), nullptr, 0, SW_SHOW);

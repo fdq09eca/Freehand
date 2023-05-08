@@ -2,8 +2,7 @@
 #include <vector>
 #include <memory>
 #include "AppObject.h"
-
-class Rect;
+#include "Menu.h"
 
 class App : NonCopyable
 {
@@ -20,7 +19,7 @@ public:
 	HPEN solidRedPen;
 	HPEN solidBlackPen;
 	HBRUSH solidRedBrush;
-
+	Menu menu;
 
 	
 	std::vector<std::unique_ptr<AppObject>> objList;
@@ -43,6 +42,8 @@ public:
 	}
 
 	void init();
+
+	void initMenu();
 
 	void setHwnd(HWND hWnd_);
 

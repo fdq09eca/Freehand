@@ -3,6 +3,8 @@
 #include "Rect.h"
 #include "Curve.h"
 
+
+
 App* App::_instance = nullptr;
 
 void App::init() {
@@ -175,4 +177,17 @@ void App::load() {
 	}
 	
 	ifs.close();
+}
+
+
+void App::initMenu() {
+	assert(_hWnd);
+	Menu fileDropDownMenu;
+	fileDropDownMenu.addItem(L"Open", -1, MCMD_FILE_OPEN);
+	fileDropDownMenu.addItem(L"Save", -1, MCMD_FILE_SAVE);
+	fileDropDownMenu.addItem(L"Exit", -1, MCMD_FILE_EXIT);
+
+	menu.addItem(L"File", -1, MCMD_FILE, &fileDropDownMenu);
+	menu.addItem(L"About", -1, MCMD_FILE_ABOUT);
+	SetMenu(_hWnd, menu.hMenu);
 }
