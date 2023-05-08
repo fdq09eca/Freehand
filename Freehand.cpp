@@ -144,6 +144,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//DestroyMenu(GetMenu(hWnd));
 		//auto v = SetMenu(hWnd, nullptr);
 		HMENU mainMenu = CreateMenu();
+		HMENU fileTab_DropDownMenu = CreateMenu();
 
 		/*const wchar_t* caption = L"File";
 
@@ -162,7 +163,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		MENUITEMINFO s;
 		const wchar_t* caption = L"File";
 		s.cbSize = sizeof(s);
-		s.fMask = MIIM_TYPE;
+		s.fMask = MIIM_TYPE | MIIM_SUBMENU | MIIM_ID;
+		s.wID = 1309;
+		s.hSubMenu = fileTab_DropDownMenu;
 		s.fType = MFT_STRING;
 		s.dwTypeData = const_cast<wchar_t*>(caption);
 		s.cch = wcslen(caption);
