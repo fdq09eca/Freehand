@@ -75,15 +75,32 @@ bool Line::updateHoverLine(const MouseEvent& ev, int distance = 10) {
 		return false; 
 	}
 
+	Point mousePos = ev.pos;
+
 	Vector2D v = pt[1] - pt[0];
-	Vector2D m = Point(ev.pos) - pt[0];
-	Vector2D u = v.unitVector();
-	Vector2D projVector = pt[0].asVector2D() + m.project(v);
-	double d = projVector.distance(Point(ev.pos));
+	Vector2D m = mousePos - pt[0];
 	
-	if (d < 0 || d > distance) { 
+	if (m.dotProduct(v) < 0) {
+		//printf("[miss] dp < 0\n");
+		return false;
+	}
+
+	Vector2D pv = m.project(v);
+
+	if (pv.length() > v.length()) {
+		//printf("[miss] pv.length: %f > v.length%f\n", pv.length(), v.length());
+		return false;
+	}
+	
+	Vector2D p = pt[0].asVector2D() + pv;
+	double d = p.distance(mousePos);
+	
+	if (d > distance) { 
+		//printf("[miss] d > distance\n");
 		return false; 
 	}
+	
+	//printf("[Hit] d <= distance\n");
 	
 	ishoverLine = true;
 	return true;
