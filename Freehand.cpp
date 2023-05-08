@@ -139,6 +139,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_CREATE: {
+		//init Menu
+		;
+		DestroyMenu(GetMenu(hWnd));
+		auto v = SetMenu(hWnd, nullptr);
+		DrawMenuBar(hWnd);
+		/*HMENU mainMenu = CreateMenu();
+		MENUITEMINFO s;
+
+		const wchar_t* f = L"File";
+		s.cbSize = sizeof(s);
+		s.fMask = MIIM_TYPE | MIIM_DATA | MIIM_SUBMENU;
+		s.fType = MFT_STRING;
+		s.fState = MFS_ENABLED;
+		s.dwTypeData = (LPTSTR) f;
+		s.cch = 4;
+
+
+		InsertMenuItem(mainMenu, 0, true, &s);
+		SetMenu(_hWnd, mainMenu);*/
+
+	}break;
 	case WM_COMMAND:
 	{
 		int wmId = LOWORD(wParam);
