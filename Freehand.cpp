@@ -162,8 +162,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 		case VK_F1: { cuurentAppObjType = AppObjectType::Line; } break;
 		case VK_F2: { cuurentAppObjType = AppObjectType::Point; } break;
-		case VK_F3: { App::Instance()->save();} break;
-		case VK_F4: { App::Instance()->load();} break;
+		//case VK_F3: { App::Instance()->save();} break;
+		//case VK_F4: { App::Instance()->load();} break;
 
 		default: { } break;
 		}

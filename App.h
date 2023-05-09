@@ -59,8 +59,8 @@ public:
 
 	MouseButton mouseButtonState() const { return _mouseButtonState; }
 
-	void save();
-	void load();
+	void save(const wchar_t* fpath) const ;
+	void load(const wchar_t* fpath) ;
 
 };
 

@@ -6,6 +6,8 @@
 #define MCMD_FILE_EXIT						903
 #define MCMD_FILE_ABOUT						904
 
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+
 class Menu {
 private:
 	std::map<const wchar_t*, int> _cmds;
@@ -29,4 +31,3 @@ public:
 
 };
 
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);

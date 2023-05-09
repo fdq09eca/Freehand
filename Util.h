@@ -218,3 +218,14 @@ public:
 
 };
 
+inline std::wstring my_getCurrentDirectory() {
+	wchar_t buff[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buff);
+	std::wstring r = buff;
+	return r;
+};
+
+template<class T>
+inline void my_bzero(T& s) {
+	memset(&s, 0, sizeof(s));
+}

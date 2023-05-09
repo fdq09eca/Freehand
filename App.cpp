@@ -141,21 +141,22 @@ void App::clearCaptureObject() {
 	captureObj = nullptr;
 }
 
-void App::save() {
+void App::save(const wchar_t* fpath) const {
+		
 		std::ofstream of;
-		of.open("saveApp.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
+		of.open(fpath, std::ios::out | std::ios::binary);
 		for (auto& obj : objList) {
 			obj->save(of);
 		}
 		of.close();
 }
 
-void App::load() {
+void App::load(const wchar_t* fpath) {
 	using Type = AppObjectType;
 	using Obj = AppObject;
 	objList.clear();
 	std::ifstream ifs;
-	ifs.open("saveApp.txt", std::ios::in | std::ios::out | std::ios::app | std::ios::binary);
+	ifs.open(fpath, std::ios::in | std::ios::binary);
 	char c;
 	int i = 0;
 	std::string objType;
