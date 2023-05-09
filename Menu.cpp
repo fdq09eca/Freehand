@@ -1,6 +1,8 @@
 #include "Menu.h"
 #include "Freehand.h"
 #include "App.h"
+#include <shobjidl.h> 
+#include <windows.h>
 
 void Menu::addItem(const wchar_t* caption, int pos, int cmdId, Menu* subMenu) {
 	MENUITEMINFO s;
@@ -45,6 +47,7 @@ bool Menu::_onWin32Command(HINSTANCE hInst, HWND hWnd, int cmdId)
 	switch (cmdId)
 	{
 	case MCMD_FILE_OPEN: { 
+#if 0
 		wchar_t filenameBuff[MAX_PATH] = { 0 };
 		const wchar_t* defaultFilename = L"saveApp.txt";
 		swprintf(filenameBuff, MAX_PATH, defaultFilename);
@@ -68,7 +71,49 @@ bool Menu::_onWin32Command(HINSTANCE hInst, HWND hWnd, int cmdId)
 			App::Instance()->load(s.lpstrFile);
 			printf("Loaded from fp: %ws\n", s.lpstrFile);
 		}
-	
+#else
+//#include <shobjidl.h> 
+//#include <windows.h>
+		HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
+			COINIT_DISABLE_OLE1DDE);
+		if (SUCCEEDED(hr))
+		{
+
+			IFileOpenDialog* pFileOpen;
+
+			// Create the FileOpenDialog object.
+			hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
+				IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
+
+			if (SUCCEEDED(hr))
+			{
+				// Show the Open dialog box.
+				hr = pFileOpen->Show(NULL);
+
+				// Get the file name from the dialog box.
+				if (SUCCEEDED(hr))
+				{
+					IShellItem* pItem;
+					hr = pFileOpen->GetResult(&pItem);
+					if (SUCCEEDED(hr))
+					{
+						PWSTR pszFilePath;
+						hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+
+						// Display the file name to the user.
+						if (SUCCEEDED(hr))
+						{
+							MessageBoxW(NULL, pszFilePath, L"File Path", MB_OK);
+							CoTaskMemFree(pszFilePath);
+						}
+						pItem->Release();
+					}
+				}
+				pFileOpen->Release();
+			}
+			CoUninitialize();
+		}
+#endif
 	} return true;
 	
 	case MCMD_FILE_SAVE: { 	
