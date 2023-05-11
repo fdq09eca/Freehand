@@ -90,7 +90,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 		if (ev.isDown()) {
 			if (ev.isLButton()) {
 				using Type = AppObjectType;
-				switch (currentAppObjType)
+				switch (currentAppObjType) // how to make it better. same question: how to cast unique_ptr<AppObject> to its subType? i.e. unique_ptr<Line>
 				{
 				case Type::Line: {
 					auto p = std::make_unique<Line>();
