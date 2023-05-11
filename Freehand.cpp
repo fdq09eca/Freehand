@@ -118,6 +118,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	
 	App::Instance()->setHwnd(hWnd);
 	App::Instance()->initMenu();
+
 	
 
 	//DrawMenuBar(hWnd);
@@ -205,6 +206,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 int main() {
-	wWinMain(GetInstanceModule(nullptr), nullptr, 0, SW_SHOW);
+	wWinMain(GetInstanceModule(0), 0, 0, SW_SHOW);
 	return 0;
 }

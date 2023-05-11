@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <iostream>
 #include <fstream>
+
 class NonCopyable {
 
 private:
@@ -137,7 +138,7 @@ public:
 	}
 };
 
-inline void writeInt(std::ofstream& f, int v) { f.write((char*)&v, sizeof(v));	}
+inline void writeInt(std::ofstream& f, int v) { f.write((char*)&v, sizeof(v));	} // worst implementation, problem: alignment; different cpu archi i.e. little/big endian?
 inline void writeString(std::ofstream& f, const char* str) { f.write(str, strlen(str)); }
 
 inline void readString(std::ifstream& f, char* buff, int nChar) {
@@ -187,7 +188,7 @@ public:
 		return u * projectLen;
 	}
 
-	inline void operator=(const Vector2D& p) { *this = Vector2D(p); }
+	inline void operator=(const Vector2D& p) { *this = Vector2D(p); } //recursive here!!
 	
 
 	inline Vector2D operator+(const Vector2D& v) const { return Vector2D(x + v.x, y + v.y); }
@@ -228,4 +229,18 @@ inline std::wstring my_getCurrentDirectory() {
 template<class T>
 inline void my_bzero(T& s) {
 	memset(&s, 0, sizeof(s));
+}
+
+inline int getClientWidth(HWND hWnd) {
+	RECT r;
+	
+	GetClientRect(hWnd, &r);
+	return r.right - r.left;
+}
+
+
+inline int getClientHeight(HWND hWnd) {
+	RECT r;
+	GetClientRect(hWnd, &r);
+	return r.bottom - r.top;
 }

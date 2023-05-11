@@ -29,7 +29,6 @@ public:
 
 	bool _onWin32Command(HINSTANCE hInst, HWND hWnd, int cmdId);
 
-
 };
 
 

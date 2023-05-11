@@ -3,6 +3,7 @@
 #include <memory>
 #include "AppObject.h"
 #include "Menu.h"
+#include "Crosshair.h"
 
 class App : NonCopyable
 {
@@ -20,6 +21,8 @@ public:
 	HPEN solidBlackPen;
 	HBRUSH solidRedBrush;
 	Menu menu;
+	Crosshair crossHair;
+	
 
 	
 	std::vector<std::unique_ptr<AppObject>> objList;
@@ -44,8 +47,10 @@ public:
 	void init();
 
 	void initMenu();
+	
 
 	void setHwnd(HWND hWnd_);
+	HWND hWnd() { return _hWnd; }
 
 	void draw(HDC hdc_) ;
 

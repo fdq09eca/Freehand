@@ -195,3 +195,9 @@ Point Line::lerp(const Point& p0, const Point& p1, float t)
 	return p0 * (1.0f - t) + p1 * t;
 }
 
+//Point Line::lerp(const Vector2D& p0, const Vector2D& p1, float t)
+//{
+//	assert(t >= 0.0f && t <= 1.0f);
+//	return p0 * (1.0f - t) + p1 * t;
+//}
+

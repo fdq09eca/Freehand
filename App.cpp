@@ -52,12 +52,12 @@ void App::draw(HDC hdc_)  {
 		tmpObj->draw(backBuffer.dc());
 	}
 
-	
+	crossHair.draw(backBuffer.dc());
 	backBuffer.draw(hdc_);
 }
 
 void App::onMouseEvent(const MouseEvent& ev) {
-	
+	crossHair.onMouseEvent(ev);
 	if (tmpObj) {
 		if (ev.isMove()) {
 			tmpObj->onMouseEvent(ev);
@@ -192,3 +192,4 @@ void App::initMenu() {
 	menu.addItem(L"About", -1, MCMD_FILE_ABOUT);
 	SetMenu(_hWnd, menu.hMenu);
 }
+
