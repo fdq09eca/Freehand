@@ -14,7 +14,6 @@ private:
 	MouseButton _mouseButtonState = MouseButton::NA;
 
 
-
 public:
 	HPEN dashRedPen;
 	HPEN solidRedPen;
@@ -22,6 +21,7 @@ public:
 	HBRUSH solidRedBrush;
 	Menu menu;
 	Crosshair crossHair;
+	AppObjectType currentAppObjType = AppObjectType::Line;
 	
 
 	

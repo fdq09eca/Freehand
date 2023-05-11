@@ -13,13 +13,13 @@ void App::init() {
 
 	// create pen and brush..
 	solidBlackPen = ::CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // black solid pen
-	
+
 	dashRedPen = ::CreatePen(PS_DOT, 1, RGB(255, 0, 0)); // red dash pen
 	solidRedPen = ::CreatePen(PS_SOLID, 5, RGB(255, 0, 0)); // red solid pen
 	solidRedBrush = ::CreateSolidBrush(RGB(255, 0, 0)); // red solid brush
-	
-	
-	
+
+
+
 	/*HMenuFileDropDown = GetSubMenu(mainMenu, 0);*/
 	// for testing purpose...
 
@@ -41,13 +41,13 @@ void App::setHwnd(HWND hWnd_) {
 	backBuffer.create(_hWnd);
 }
 
-void App::draw(HDC hdc_)  {
+void App::draw(HDC hdc_) {
 	backBuffer.clear();
-	
+
 	for (const auto& p : objList) {
 		p->draw(backBuffer.dc());
 	}
-	
+
 	if (tmpObj) {
 		tmpObj->draw(backBuffer.dc());
 	}
@@ -63,7 +63,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 			tmpObj->onMouseEvent(ev);
 			return;
 		}
-		
+
 
 		if (ev.isUp()) {
 			if (ev.isLButton()) {
@@ -81,7 +81,7 @@ void App::onMouseEvent(const MouseEvent& ev) {
 		}
 
 
-		for (auto& p : objList) { 
+		for (auto& p : objList) {
 			if (p->onMouseEvent(ev)) {
 				return;
 			}
@@ -89,10 +89,28 @@ void App::onMouseEvent(const MouseEvent& ev) {
 
 		if (ev.isDown()) {
 			if (ev.isLButton()) {
-				auto p = std::make_unique<Curve>();
-				p->onCreate(ev); 
-				tmpObj = std::move(p);
-				return;
+				using Type = AppObjectType;
+				switch (currentAppObjType)
+				{
+				case Type::Line: {
+					auto p = std::make_unique<Line>();
+					p->onCreate(ev);
+					tmpObj = std::move(p);
+				} return;
+				case Type::Rect: {
+					auto p = std::make_unique<Rect>();
+					p->onCreate(ev);
+					tmpObj = std::move(p);
+				} return;
+				case Type::Curve: {
+					auto p = std::make_unique<Curve>();
+					p->onCreate(ev);
+					tmpObj = std::move(p);
+				} return;
+				default: {
+					assert(false);
+				} return;
+				}
 			}
 		}
 	}
@@ -109,16 +127,16 @@ void App::_onWin32MouseEvent(UINT msg, WPARAM wp, LPARAM lp) {
 		using B = MouseButton;
 		using T = MouseEventType;
 
-	case WM_LBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Left;   _mouseButtonState |=  B::Left;	} break;
-	case WM_MBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Middle; _mouseButtonState |=  B::Middle;	} break;
-	case WM_RBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Right;  _mouseButtonState |=  B::Right;	} break;
-	
-	case WM_LBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Left;   _mouseButtonState &= ~B::Left;	} break;
-	case WM_MBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Middle; _mouseButtonState &= ~B::Middle;	} break;
-	case WM_RBUTTONUP:	 { ev.eventType = T::Up;	ev.button = B::Right;  _mouseButtonState &= ~B::Right;	} break;
+	case WM_LBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Left;   _mouseButtonState |= B::Left;	} break;
+	case WM_MBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Middle; _mouseButtonState |= B::Middle;	} break;
+	case WM_RBUTTONDOWN: { ev.eventType = T::Down;  ev.button = B::Right;  _mouseButtonState |= B::Right;	} break;
+
+	case WM_LBUTTONUP: { ev.eventType = T::Up;	ev.button = B::Left;   _mouseButtonState &= ~B::Left;	} break;
+	case WM_MBUTTONUP: { ev.eventType = T::Up;	ev.button = B::Middle; _mouseButtonState &= ~B::Middle;	} break;
+	case WM_RBUTTONUP: { ev.eventType = T::Up;	ev.button = B::Right;  _mouseButtonState &= ~B::Right;	} break;
 
 	case WM_MOUSEMOVE: { ev.eventType = T::Move; } break;
-	
+
 	default: { assert(false); return; } break;
 	}
 	//ev.btnState // do it later
@@ -142,13 +160,13 @@ void App::clearCaptureObject() {
 }
 
 void App::save(const wchar_t* fpath) const {
-		
-		std::ofstream of;
-		of.open(fpath, std::ios::out | std::ios::binary);
-		for (auto& obj : objList) {
-			obj->save(of);
-		}
-		of.close();
+
+	std::ofstream of;
+	of.open(fpath, std::ios::out | std::ios::binary);
+	for (auto& obj : objList) {
+		obj->save(of);
+	}
+	of.close();
 }
 
 void App::load(const wchar_t* fpath) {
@@ -160,15 +178,15 @@ void App::load(const wchar_t* fpath) {
 	char c;
 	int i = 0;
 	std::string objType;
-	
+
 	while (ifs.get(c)) {
 		if (c == '\n' || c == ' ') continue;
-	
-		
+
+
 		if (c == ':') {
-			if (objType == Obj::typeAsString(Type::Line))	{ Line::load(ifs); }
-			if (objType == Obj::typeAsString(Type::Rect))	{ Rect::load(ifs); }
-			if (objType == Obj::typeAsString(Type::Curve))	{ Curve::load(ifs); }
+			if (objType == Obj::typeAsString(Type::Line)) { Line::load(ifs); }
+			if (objType == Obj::typeAsString(Type::Rect)) { Rect::load(ifs); }
+			if (objType == Obj::typeAsString(Type::Curve)) { Curve::load(ifs); }
 			objType.clear();
 			continue;
 		}
@@ -176,7 +194,7 @@ void App::load(const wchar_t* fpath) {
 			objType += c;
 		}
 	}
-	
+
 	ifs.close();
 }
 

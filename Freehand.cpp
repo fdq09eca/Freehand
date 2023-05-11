@@ -17,7 +17,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 
-AppObjectType cuurentAppObjType = AppObjectType::Line;
+
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -161,8 +161,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN: {
 		switch (wParam)
 		{
-		case VK_F1: { cuurentAppObjType = AppObjectType::Line; } break;
-		case VK_F2: { cuurentAppObjType = AppObjectType::Point; } break;
+		case VK_F1: { App::Instance()->currentAppObjType = AppObjectType::Line; } break;
+		case VK_F2: { App::Instance()->currentAppObjType = AppObjectType::Rect; } break;
+		case VK_F3: { App::Instance()->currentAppObjType = AppObjectType::Curve; } break;
+		case VK_F4: { App::Instance()->currentAppObjType = AppObjectType::Point; } break;
 		//case VK_F3: { App::Instance()->save();} break;
 		//case VK_F4: { App::Instance()->load();} break;
 
@@ -182,11 +184,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 	{
 		PAINTSTRUCT ps;
-
-
 		HDC hdc = BeginPaint(hWnd, &ps);
-		
-
 		App::Instance()->draw(hdc);
 		// TODO: Add any drawing code that uses hdc here...
 		EndPaint(hWnd, &ps);
