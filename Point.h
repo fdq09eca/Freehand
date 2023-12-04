@@ -10,11 +10,11 @@ public:
 	Point(int x_ = 0, int y_ = 0) : x(x_), y(y_) { }
 	
 	Point(const POINT& p);
+	inline operator POINT () const { return asPOINT(); }
 
 	inline POINT asPOINT() const { return POINT{ x, y }; }
-	inline Vector2D asVector2D() const { return Vector2D(x, y); }
 	
-	inline operator POINT () const { return asPOINT(); }
+	inline Vector2D asVector2D() const { return Vector2D(x, y); }	
 	inline operator Vector2D () const { return asVector2D(); }
 	// operator POINT* () const { return &asPOINT(); } // does it work?
 	

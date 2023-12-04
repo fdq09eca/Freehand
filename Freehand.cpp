@@ -161,14 +161,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN: {
 		switch (wParam)
 		{
-		case VK_F1: { App::Instance()->currentAppObjType = AppObjectType::Line; } break;
-		case VK_F2: { App::Instance()->currentAppObjType = AppObjectType::Rect; } break;
-		case VK_F3: { App::Instance()->currentAppObjType = AppObjectType::Curve; } break;
-		case VK_F4: { App::Instance()->currentAppObjType = AppObjectType::Point; } break;
-		//case VK_F3: { App::Instance()->save();} break;
-		//case VK_F4: { App::Instance()->load();} break;
+			case VK_F1: { App::Instance()->currentAppObjType = AppObjectType::Line; } break;
+			case VK_F2: { App::Instance()->currentAppObjType = AppObjectType::Rect; } break;
+			case VK_F3: { App::Instance()->currentAppObjType = AppObjectType::Curve; } break;
+			case VK_F4: { App::Instance()->currentAppObjType = AppObjectType::Point; } break;
+			//case VK_F3: { App::Instance()->save();} break;
+			//case VK_F4: { App::Instance()->load();} break;
 
-		default: { } break;
+			default: { } break;
 		}
 	} break;
 

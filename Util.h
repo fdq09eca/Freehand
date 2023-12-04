@@ -25,7 +25,7 @@ enum class MouseButton {
 	NA = 0, 
 	Left = 1 << 0,    // 1, 0001
 	Middle = 1 << 1,  // 2, 0010 
-	Right = 1 << 2,   // 4, 0100
+	Right = 1 << 2,   // 4, 0100 
 };
 
 inline constexpr MouseButton operator& (MouseButton x, MouseButton y) {
